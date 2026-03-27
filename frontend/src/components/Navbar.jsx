@@ -34,6 +34,7 @@ const Navbar = () => {
     }
 
     const categories = [
+        { name: 'Home', path: '/' },
         { name: 'iPhone', path: '/products?category=iPhone' },
         { name: 'Mac', path: '/products?category=Mac' },
         { name: 'iPad', path: '/products?category=iPad' },
@@ -43,18 +44,18 @@ const Navbar = () => {
     ];
 
     return (
-        <header className='bg-black backdrop-blur-md sticky top-0 w-full z-50 border-b border-zinc-800/50 h-20'>
-            <div className='flex justify-between items-center h-full pr-6'>
+        <header className='bg-black backdrop-blur-md sticky top-0 w-full z-50 border-b border-zinc-800/50'>
+            <div className='max-w-7xl mx-auto flex justify-between items-center py-3 px-6'>
                 {/* Logo Section */}
-                <div className="h-full">
-                    <Link to="/" className="h-full block">
-                        <img src={logo} alt="INBOX" className="h-full w-auto object-contain" />
+                <div>
+                    <Link to="/" className="flex items-center hover:opacity-80 transition-opacity">
+                        <img src={logo} alt="INBOX" className="h-14 w-14 object-cover rounded-full mix-blend-screen" />
                     </Link>
                 </div>
 
                 {/* Desktop Navigation */}
                 <nav className='hidden lg:flex gap-8 items-center'>
-                    <ul className='flex items-center gap-8 font-semibold text-zinc-400 text-sm uppercase tracking-widest'>
+                    <ul className='flex items-center gap-6 font-semibold text-zinc-400 text-[11px] uppercase tracking-[0.2em]'>
                         {categories.map((cat) => (
                             <Link 
                                 key={cat.name} 

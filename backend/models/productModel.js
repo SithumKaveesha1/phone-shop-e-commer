@@ -22,7 +22,7 @@ const productSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
-      enum: ["Mobile", "Headphone", "Laptop", "TV"],
+      enum: ["iPhone", "Mac", "iPad", "Watch", "AirPods", "Accessories", "Mobile", "Headphone", "Laptop", "TV"],
     },
     brand: {
       type: String,

@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import FilterSidebar from '../components/FilterSidebar';
 import ProductCard from '../components/ProductCard';
 import axios from 'axios';
@@ -9,18 +10,30 @@ import { Link } from 'react-router-dom';
 
 const Products = () => {
   const { user } = useSelector(state => state.user);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlCategory = searchParams.get('category') || 'All';
+  const urlSearch = searchParams.get('search') || '';
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [filters, setFilters] = useState({
-    search: '',
-    category: 'All',
+    search: urlSearch,
+    category: urlCategory,
     brand: 'All',
     minPrice: 0,
     maxPrice: 2000000,
   });
 
   const [sortOrder, setSortOrder] = useState('relevant');
+
+  useEffect(() => {
+    setFilters(prev => ({
+      ...prev,
+      category: searchParams.get('category') || 'All',
+      search: searchParams.get('search') || ''
+    }));
+  }, [searchParams]);
 
   useEffect(() => {
     const fetchProducts = async () => {

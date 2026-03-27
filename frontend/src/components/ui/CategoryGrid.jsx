@@ -1,36 +1,38 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { Smartphone, Laptop, Tablet, Watch, Headphones, Layers, LayoutGrid, Home } from 'lucide-react';
 
 const categories = [
-  { name: 'iPhone', icon: 'https://www.apple.com/v/home/br/images/logos/thp-categories/iphone_light__be9vpk08f6ue_large.png', path: '/products?category=iPhone' },
-  { name: 'AirPods', icon: 'https://www.apple.com/v/home/br/images/logos/thp-categories/airpods_light__f9pe8v8n4362_large.png', path: '/products?category=AirPods' },
-  { name: 'iPad', icon: 'https://www.apple.com/v/home/br/images/logos/thp-categories/ipad_light__dp990z7l8m6u_large.png', path: '/products?category=iPad' },
-  { name: 'Watch', icon: 'https://www.apple.com/v/home/br/images/logos/thp-categories/watch_light__f0b694f454eq_large.png', path: '/products?category=Watch' },
-  { name: 'Mac', icon: 'https://www.apple.com/v/home/br/images/logos/thp-categories/mac_light__f6u56598586a_large.png', path: '/products?category=Mac' },
-  { name: 'Accessories', icon: 'https://www.apple.com/v/home/br/images/logos/thp-categories/accessories_light__fa6r9fyrp9ue_large.png', path: '/products?category=Accessories' },
-  { name: 'More', icon: 'https://www.apple.com/v/home/br/images/logos/thp-categories/more_light__dyf18f78q9ue_large.png', path: '/products' },
+  { name: 'Home', icon: Home, path: '/' },
+  { name: 'iPhone', icon: Smartphone, path: '/products?category=iPhone' },
+  { name: 'AirPods', icon: Headphones, path: '/products?category=AirPods' },
+  { name: 'iPad', icon: Tablet, path: '/products?category=iPad' },
+  { name: 'Watch', icon: Watch, path: '/products?category=Watch' },
+  { name: 'Mac', icon: Laptop, path: '/products?category=Mac' },
+  { name: 'Accessories', icon: Layers, path: '/products?category=Accessories' },
+  { name: 'More', icon: LayoutGrid, path: '/products' },
 ];
+
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const CategoryGrid = () => {
   return (
     <section id="categories" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-2xl font-black text-black mb-12 text-center md:text-left">Popular Categories</h2>
-        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-8 md:gap-4">
+        <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-8 md:gap-4">
           {categories.map((cat, idx) => (
             <Link 
               key={cat.name} 
               to={cat.path}
               className="flex flex-col items-center group transition-all"
             >
-              <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center mb-4 transition-transform duration-500 group-hover:scale-110">
-                <img 
-                  src={cat.icon} 
-                  alt={cat.name} 
-                  className="w-full h-auto object-contain brightness-0 group-hover:brightness-100 transition-all opacity-80 group-hover:opacity-100" 
+              <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center mb-4 transition-transform duration-500 group-hover:scale-110 bg-zinc-50 rounded-2xl group-hover:bg-zinc-100 border border-zinc-100 group-hover:border-zinc-200">
+                <cat.icon 
+                  size={32}
+                  className="text-zinc-400 group-hover:text-black transition-all" 
                 />
               </div>
-              <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest group-hover:text-black transition-colors">
+              <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest group-hover:text-black transition-colors text-center">
                 {cat.name}
               </span>
             </Link>
