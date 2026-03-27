@@ -43,12 +43,12 @@ const Navbar = () => {
     ];
 
     return (
-        <header className='bg-black/95 backdrop-blur-md sticky top-0 w-full z-50 border-b border-zinc-800/50'>
-            <div className='max-w-7xl mx-auto flex justify-between items-center py-3 px-6'>
+        <header className='bg-black backdrop-blur-md sticky top-0 w-full z-50 border-b border-zinc-800/50 h-20'>
+            <div className='flex justify-between items-center h-full pr-6'>
                 {/* Logo Section */}
-                <div>
-                    <Link to="/" className="flex items-center hover:opacity-80 transition-opacity">
-                        <img src={logo} alt="INBOX" className="h-16 w-auto mix-blend-screen rounded-full overflow-hidden" />
+                <div className="h-full">
+                    <Link to="/" className="h-full block">
+                        <img src={logo} alt="INBOX" className="h-full w-auto object-contain" />
                     </Link>
                 </div>
 
