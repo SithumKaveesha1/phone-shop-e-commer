@@ -1,70 +1,72 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { FaFacebook, FaInstagram, FaTwitter, FaYoutube, FaWhatsapp, FaTiktok } from 'react-icons/fa'
+import { FaFacebook, FaInstagram, FaTiktok, FaWhatsapp } from 'react-icons/fa'
 import { RiVisaLine, RiMastercardLine } from 'react-icons/ri'
 import { SiAmericanexpress } from 'react-icons/si'
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo.jpeg'
+import InstagramGrid from './InstagramGrid'
 
 const Footer = () => {
     return (
-        <footer className='bg-black text-zinc-400 py-16 border-t border-zinc-800/50'>
+        <footer className='bg-black text-zinc-400 py-24 border-t border-zinc-800/50'>
             <div className='max-w-7xl mx-auto px-6'>
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12'>
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16'>
                     
                     {/* Brand Section */}
-                    <div className='space-y-6'>
+                    <div className='space-y-8'>
                         <Link to='/' className='inline-block group'>
-                            <img src={logo} alt="INBOX" className="h-14 w-auto invert brightness-0 group-hover:opacity-80 transition-opacity" />
+                            <img src={logo} alt="INBOX" className="h-14 w-auto invert brightness-0 group-hover:opacity-80 transition-all" />
                         </Link>
-                        <p className='text-sm leading-relaxed max-w-xs'>
-                            Elevate your digital life with premium technology. We provide the latest authentic Apple products and premium accessories with unmatched service.
+                        <p className='text-sm leading-relaxed max-w-xs font-medium'>
+                            INBOX.LK is the #1 Apple Products Reseller in Sri Lanka and we strive to bring the Apple products you love closer to you.
                         </p>
-                        <div className='flex space-x-4 mt-6'>
-                            <FaFacebook className='text-xl cursor-pointer hover:text-white transition-colors' />
-                            <FaInstagram className='text-xl cursor-pointer hover:text-white transition-colors' />
-                            <FaTiktok className='text-xl cursor-pointer hover:text-white transition-colors' />
-                            <FaWhatsapp className='text-xl cursor-pointer hover:text-white transition-colors' />
+                        <div className="space-y-4 pt-4">
+                            <h4 className="text-black font-black text-xs uppercase tracking-widest">Subscribe us</h4>
+                            <div className='flex space-x-3'>
+                                <a href="#" className='w-10 h-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:bg-white hover:text-black transition-all'><FaFacebook /></a>
+                                <a href="#" className='w-10 h-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:bg-white hover:text-black transition-all'><FaInstagram /></a>
+                                <a href="#" className='w-10 h-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:bg-white hover:text-black transition-all'><FaTiktok /></a>
+                                <a href="#" className='w-10 h-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:bg-white hover:text-black transition-all'><FaWhatsapp /></a>
+                            </div>
+                        </div>
+                        <div className="pt-6 border-t border-zinc-800/50">
+                             <p className="text-[10px] font-bold text-zinc-500 leading-relaxed uppercase tracking-widest">
+                                INBOX Apple Store - Ambalangoda Branch<br/>
+                                No 78/2 Gale Road, Ambalangoda.
+                             </p>
                         </div>
                     </div>
 
                     {/* Shop Categories */}
                     <div>
-                        <h3 className='text-white font-bold text-lg mb-6 uppercase tracking-widest text-sm'>Shop</h3>
-                        <ul className='space-y-4 text-sm font-medium'>
+                        <h3 className='text-white font-black text-xs uppercase tracking-[0.2em] mb-8'>Categories</h3>
+                        <ul className='space-y-4 text-sm font-bold'>
                             <li><Link to="/products?category=iPhone" className="hover:text-white transition-colors">iPhone</Link></li>
                             <li><Link to="/products?category=Mac" className="hover:text-white transition-colors">Mac</Link></li>
                             <li><Link to="/products?category=iPad" className="hover:text-white transition-colors">iPad</Link></li>
                             <li><Link to="/products?category=Watch" className="hover:text-white transition-colors">Watch</Link></li>
+                            <li><Link to="/products?category=AirPods" className="hover:text-white transition-colors">AirPods</Link></li>
                             <li><Link to="/products?category=Accessories" className="hover:text-white transition-colors">Accessories</Link></li>
                         </ul>
                     </div>
 
-                    {/* Customer Service */}
+                    {/* Useful Links */}
                     <div>
-                        <h3 className='text-white font-bold text-lg mb-6 uppercase tracking-widest text-sm'>Support</h3>
-                        <ul className='space-y-4 text-sm font-medium'>
-                            <li><Link to="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
-                            <li><Link to="#" className="hover:text-white transition-colors">Shipping & Returns</Link></li>
-                            <li><Link to="#" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-                            <li><Link to="#" className="hover:text-white transition-colors">Warranty Info</Link></li>
-                            <li><Link to="#" className="hover:text-white transition-colors">FAQs</Link></li>
+                        <h3 className='text-white font-black text-xs uppercase tracking-[0.2em] mb-8'>Useful Links</h3>
+                        <ul className='space-y-4 text-sm font-bold'>
+                            <li><Link to="/products" className="hover:text-white transition-colors">Shop All</Link></li>
+                            <li><Link to="/profile" className="hover:text-white transition-colors">Profile</Link></li>
+                            <li><Link to="/orders" className="hover:text-white transition-colors">Orders</Link></li>
+                            <li><Link to="/wishlist" className="hover:text-white transition-colors">Wishlist</Link></li>
+                            <li><Link to="/contact" className="hover:text-white transition-colors">Our contacts</Link></li>
+                            <li><Link to="/returns" className="hover:text-white transition-colors">Delivery & Return</Link></li>
                         </ul>
                     </div>
 
-                    {/* Newsletter */}
-                    <div className='space-y-6'>
-                        <h3 className='text-white font-bold text-lg uppercase tracking-widest text-sm'>Stay Connected</h3>
-                        <p className='text-sm'>Subscribe to receive updates, access to exclusive deals, and more.</p>
-                        <form className='flex flex-col gap-3'>
-                            <input 
-                                type="email" 
-                                placeholder='Email Address' 
-                                className='w-full bg-zinc-900 border border-zinc-800 p-3 rounded-xl text-white focus:outline-none focus:border-primary transition-colors text-sm'
-                            />
-                            <button type='submit' className='bg-white text-black font-bold py-3 rounded-xl hover:bg-zinc-200 transition-all text-xs uppercase tracking-widest'>
-                                Subscribe
-                            </button>
-                        </form>
+                    {/* Instagram Grid */}
+                    <div className='space-y-8'>
+                        <h3 className='text-white font-black text-xs uppercase tracking-[0.2em]'>Follow Us</h3>
+                        <InstagramGrid />
                     </div>
 
                 </div>

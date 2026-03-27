@@ -5,7 +5,7 @@ import { toast } from 'sonner'
 import axios from 'axios'
 import { Button } from './ui/button'
 import { useSelector } from 'react-redux'
-import logo from '../assets/logo.png'
+import logo from '../assets/logo.jpeg'
 
 const Navbar = () => {
     const { user } = useSelector(state => state.user);

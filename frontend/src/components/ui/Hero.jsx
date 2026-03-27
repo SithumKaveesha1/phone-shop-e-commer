@@ -1,104 +1,91 @@
-import React from 'react'
-import { Button } from './button'
-import { ShoppingBag, ArrowRight, Star } from 'lucide-react'
+import React, { useRef } from 'react';
+import { ChevronDown } from 'lucide-react';
+import camImage from '../../assets/iphone_17_pro_camera_closeup.png';
 
 const Hero = () => {
-    return (
-        <section className="relative overflow-hidden pt-12 pb-24 md:pt-20 md:pb-32 bg-black">
-            {/* Immersive Background Effects */}
-            <div className="absolute inset-0 z-0">
-                <div className="absolute top-[10%] left-[5%] w-[30%] h-[40%] bg-primary/10 rounded-full blur-[140px] animate-pulse"></div>
-                <div className="absolute bottom-[20%] right-[5%] w-[40%] h-[50%] bg-zinc-800/20 rounded-full blur-[120px]"></div>
-            </div>
+  const scrollToContent = () => {
+    const nextSection = document.getElementById('categories');
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
-            <div className='max-w-7xl mx-auto px-6 relative z-10'>
-                <div className='grid lg:grid-cols-2 gap-16 lg:gap-24 items-center'>
-                    
-                    {/* Text Content */}
-                    <div className="space-y-10 animate-in fade-in slide-in-from-left-12 duration-1000">
-                        <div className="inline-flex items-center gap-2 bg-zinc-900/80 backdrop-blur-sm px-4 py-2 rounded-full border border-zinc-800">
-                            <Star size={14} className="text-primary fill-primary" />
-                            <span className="text-[10px] font-black text-zinc-300 tracking-[0.2em] uppercase">Authorized Reseller 2026</span>
-                        </div>
+  return (
+    <section className="relative h-screen w-full bg-black overflow-hidden flex flex-col items-center justify-center pt-20">
+      
+      {/* Background Animated Image */}
+      <div className="absolute inset-0 z-0 scale-110">
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black z-10 opacity-80" />
+        <img
+          src={camImage}
+          alt="iPhone 17 Pro"
+          className="w-full h-full object-cover animate-hero-zoom opacity-60"
+        />
+      </div>
 
-                        <div className="space-y-4">
-                            <h1 className='text-6xl md:text-8xl font-black text-white leading-[0.95] tracking-tighter'>
-                                THE NEW <br />
-                                <span className="text-primary">IPHONE 16</span> <br />
-                                PRO.
-                            </h1>
-                            <p className='text-lg md:text-xl text-zinc-400 leading-relaxed max-w-md font-medium'>
-                                Titanium design. Action button. A18 Pro chip. Explore the most powerful iPhone ever.
-                            </p>
-                        </div>
+      {/* Main Content */}
+      <div className="relative z-20 text-center flex flex-col items-center max-w-5xl px-6 w-full">
+        <div className="animate-reveal-up" style={{ animationDelay: '0.2s' }}>
+            <span className="text-2xl md:text-3xl font-bold text-zinc-400 tracking-tighter mb-2 block uppercase">
+                iPhone 17
+            </span>
+            <h1 className="text-[120px] md:text-[200px] lg:text-[260px] font-black text-white leading-[0.7] tracking-tighter mb-12 drop-shadow-[0_0_80px_rgba(255,255,255,0.15)]">
+                PRO<span className="text-primary italic">.</span>
+            </h1>
+        </div>
 
-                        <div className='flex flex-col sm:flex-row gap-4'>
-                            <Button className='h-14 px-10 bg-white text-black hover:bg-zinc-200 rounded-2xl text-sm font-black uppercase tracking-widest transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center gap-3'>
-                                Buy Now
-                                <ShoppingBag size={18} />
-                            </Button>
-                            <Button variant='outline' className='h-14 px-10 border-zinc-800 bg-zinc-950/50 text-white hover:bg-zinc-900 rounded-2xl text-sm font-black uppercase tracking-widest transition-all flex items-center gap-3 border-2'>
-                                Learn More
-                                <ArrowRight size={18} />
-                            </Button>
-                        </div>
+        <div className="animate-reveal-up mt-8" style={{ animationDelay: '0.6s' }}>
+            <p className="text-zinc-400 text-lg md:text-xl font-medium tracking-wide max-w-lg mx-auto leading-relaxed">
+                Titanium design. Action button. A18 Pro chip. <br/>
+                <span className="text-white font-black italic mt-3 block text-2xl">Explore the most powerful iPhone ever.</span>
+            </p>
+        </div>
 
-                        {/* Stats / Proof */}
-                        <div className="pt-8 flex items-center gap-12 border-t border-zinc-900">
-                            <div className="group">
-                                <p className="text-3xl font-black text-white group-hover:text-primary transition-colors">100%</p>
-                                <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-1">Authentic</p>
-                            </div>
-                            <div className="group">
-                                <p className="text-3xl font-black text-white group-hover:text-primary transition-colors">24/7</p>
-                                <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-1">Support</p>
-                            </div>
-                            <div className="group">
-                                <p className="text-3xl font-black text-white group-hover:text-primary transition-colors">LKR</p>
-                                <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-1">Best Price</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    {/* Image Section */}
-                    <div className='relative flex justify-center lg:justify-end animate-in fade-in zoom-in duration-1000 delay-300'>
-                        {/* Dramatic Glow */}
-                        <div className="absolute inset-0 bg-primary/10 rounded-full blur-[100px] scale-90 animate-pulse"></div>
-                        
-                        <div className="relative group">
-                            <img
-                                src="/premium-hero.png" 
-                                alt="iPhone 16 Pro"
-                                className='max-w-full h-auto drop-shadow-[0_0_50px_rgba(249,115,22,0.1)] select-none motion-safe:animate-[float_8s_ease-in-out_infinite] scale-110 lg:scale-125 transition-transform duration-1000 group-hover:rotate-1'
-                            />
-                            
-                            {/* Floating Badge */}
-                            <div className="absolute -bottom-8 -left-12 bg-black/80 backdrop-blur-2xl p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-zinc-800 hidden md:flex items-center gap-4 animate-bounce duration-[4000ms]">
-                                <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center text-black shadow-[0_0_20px_rgba(249,115,22,0.4)]">
-                                    <Star size={24} fill="currentColor" />
-                                </div>
-                                <div className="pr-4">
-                                    <p className="text-xs font-black text-zinc-500 uppercase tracking-widest">Starting from</p>
-                                    <p className="text-xl font-black text-white">Rs. 345,000</p>
-                                </div>
-                            </div>
+        {/* Explore Latest Lineup Text & See More Button */}
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center animate-reveal-up w-full" style={{ animationDelay: '1s' }}>
+            <span className="text-[10px] uppercase font-black tracking-[0.5em] text-zinc-500 mb-8 animate-pulse">
+                Explore Latest Lineup
+            </span>
+            <button
+                onClick={scrollToContent}
+                className="group flex flex-col items-center gap-3 transition-all active:scale-95"
+            >
+                <div className="relative">
+                    <div className="absolute inset-0 bg-primary/30 blur-2xl rounded-full animate-pulse opacity-50" />
+                    <div className="relative w-40 h-16 bg-white/5 backdrop-blur-3xl border border-white/10 rounded-full flex items-center justify-center gap-4 group-hover:bg-white/10 transition-all shadow-2xl">
+                        <span className="text-white font-black text-xs uppercase tracking-[0.2em] pl-1">See More</span>
+                        <div className="bg-primary/20 p-2 rounded-full border border-primary/30">
+                            <ChevronDown size={16} className="text-primary animate-bounce" strokeWidth={3} />
                         </div>
                     </div>
                 </div>
-            </div>
+            </button>
+        </div>
+      </div>
 
-            <style>{`
-                @keyframes float {
-                    0% { transform: translateY(0px) rotate(0deg); }
-                    50% { transform: translateY(-40px) rotate(2deg); }
-                    100% { transform: translateY(0px) rotate(0deg); }
-                }
-                .motion-safe\\:animate-\\[float_8s_ease-in-out_infinite\\] {
-                    animation: float 8s ease-in-out infinite;
-                }
-            `}</style>
-        </section>
-    )
-}
+      {/* Decorative Light Elements */}
+      <div className="absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+      <div className="absolute top-0 bottom-0 right-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
-export default Hero
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes hero-zoom {
+          0% { transform: scale(1.1) rotate(0deg); }
+          50% { transform: scale(1.05) rotate(1deg); }
+          100% { transform: scale(1.1) rotate(0deg); }
+        }
+        @keyframes reveal-up {
+          from { opacity: 0; transform: translateY(50px); filter: blur(20px); }
+          to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+        .animate-hero-zoom {
+          animation: hero-zoom 25s ease-in-out infinite;
+        }
+        .animate-reveal-up {
+          animation: reveal-up 1.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+      `}} />
+    </section>
+  );
+};
+
+export default Hero;
