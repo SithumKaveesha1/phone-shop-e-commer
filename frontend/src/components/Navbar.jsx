@@ -48,7 +48,7 @@ const Navbar = () => {
                 {/* Logo Section */}
                 <div>
                     <Link to="/" className="flex items-center hover:opacity-80 transition-opacity">
-                        <img src={logo} alt="INBOX" className="h-14 w-auto invert brightness-0" />
+                        <img src={logo} alt="INBOX" className="h-16 w-auto mix-blend-screen rounded-full overflow-hidden" />
                     </Link>
                 </div>
 

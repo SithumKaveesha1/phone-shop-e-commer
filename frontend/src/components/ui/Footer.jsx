@@ -15,7 +15,7 @@ const Footer = () => {
                     {/* Brand Section */}
                     <div className='space-y-8'>
                         <Link to='/' className='inline-block group'>
-                            <img src={logo} alt="INBOX" className="h-14 w-auto invert brightness-0 group-hover:opacity-80 transition-all" />
+                            <img src={logo} alt="INBOX" className="h-20 w-auto group-hover:opacity-80 transition-all rounded-full overflow-hidden" />
                         </Link>
                         <p className='text-sm leading-relaxed max-w-xs font-medium'>
                             INBOX.LK is the #1 Apple Products Reseller in Sri Lanka and we strive to bring the Apple products you love closer to you.
