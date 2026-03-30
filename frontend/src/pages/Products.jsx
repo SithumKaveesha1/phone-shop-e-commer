@@ -24,6 +24,9 @@ const Products = () => {
   });
 
   const [sortOrder, setSortOrder] = useState('relevant');
+  const [itemsPerPage, setItemsPerPage] = useState(12);
+  const [viewMode, setViewMode] = useState('grid');
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     setFilters(prev => ({
@@ -59,6 +62,7 @@ const Products = () => {
       maxPrice: 2000000,
     });
     setSortOrder('relevant');
+    setCurrentPage(1);
   };
 
   const handleProductDelete = (deletedId) => {
@@ -80,6 +84,18 @@ const Products = () => {
       return 0;
     });
   }, [filters, sortOrder, products]);
+
+  // Reset to first page when filtering or changing items per page
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters, sortOrder, itemsPerPage]);
+
+  const currentProducts = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredProducts.slice(start, start + itemsPerPage);
+  }, [filteredProducts, currentPage, itemsPerPage]);
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
   return (
     <div className="min-h-screen bg-[#f5f5f7] pt-24 pb-20 relative overflow-hidden">
@@ -117,17 +133,31 @@ const Products = () => {
                     <div className="flex items-center gap-5 px-4 h-10 border-r border-zinc-100">
                         <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Show:</span>
                         <div className="flex gap-4">
-                            {['9', '12', '18', '24'].map(n => (
-                                <button key={n} className={`text-xs font-black transition-all ${n === '12' ? 'text-blue-600 scale-110' : 'text-zinc-400 hover:text-zinc-900'}`}>{n}</button>
+                            {[9, 12, 18, 24].map(n => (
+                                <button 
+                                    key={n} 
+                                    onClick={() => setItemsPerPage(n)}
+                                    className={`text-xs font-black transition-all ${itemsPerPage === n ? 'text-blue-600 scale-110' : 'text-zinc-400 hover:text-zinc-900'}`}
+                                >
+                                    {n}
+                                </button>
                             ))}
                         </div>
                     </div>
                     
-                    <div className="flex items-center gap-4 h-10 border-r border-zinc-100 pr-8">
-                        <div className="bg-zinc-50 p-2 rounded-xl border border-zinc-100">
-                          <LayoutGrid size={18} className="text-blue-600 cursor-pointer" />
-                        </div>
-                        <Layout size={18} className="text-zinc-300 hover:text-blue-600 transition-colors cursor-pointer" />
+                    <div className="flex items-center gap-2 h-10 border-r border-zinc-100 pr-8 pl-4">
+                        <button 
+                            onClick={() => setViewMode('grid')}
+                            className={`p-2 rounded-xl transition-colors ${viewMode === 'grid' ? 'bg-zinc-50 border border-zinc-100 text-blue-600 shadow-inner' : 'text-zinc-300 hover:text-blue-600 border border-transparent'}`}
+                        >
+                          <LayoutGrid size={18} />
+                        </button>
+                        <button 
+                            onClick={() => setViewMode('list')}
+                            className={`p-2 rounded-xl transition-colors ${viewMode === 'list' ? 'bg-zinc-50 border border-zinc-100 text-blue-600 shadow-inner' : 'text-zinc-300 hover:text-blue-600 border border-transparent'}`}
+                        >
+                          <Layout size={18} />
+                        </button>
                     </div>
 
                     <div className="relative pr-6">
@@ -164,17 +194,50 @@ const Products = () => {
 
             {/* Grid */}
             {loading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10">
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="bg-white animate-pulse rounded-[48px] aspect-[4/5] border border-zinc-100"></div>
+              <div className={viewMode === 'grid' ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10" : "flex flex-col gap-6"}>
+                {[...Array(itemsPerPage)].map((_, i) => (
+                  <div key={i} className={`bg-white animate-pulse rounded-[48px] border border-zinc-100 ${viewMode === 'list' ? 'h-64' : 'aspect-[4/5]'}`}></div>
                 ))}
               </div>
-            ) : filteredProducts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10">
-                {filteredProducts.map((product) => (
-                  <ProductCard key={product._id} product={product} onDelete={handleProductDelete} />
-                ))}
-              </div>
+            ) : currentProducts.length > 0 ? (
+              <>
+                <div className={viewMode === 'grid' ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10" : "flex flex-col gap-6"}>
+                  {currentProducts.map((product) => (
+                    <ProductCard key={product._id} product={product} onDelete={handleProductDelete} viewMode={viewMode} />
+                  ))}
+                </div>
+                
+                {/* Pagination Controls */}
+                {totalPages > 1 && (
+                    <div className="mt-16 flex justify-between items-center bg-white p-4 rounded-[24px] border border-zinc-100 shadow-sm">
+                        <button 
+                            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                            disabled={currentPage === 1}
+                            className="px-6 py-3 bg-zinc-50 border border-zinc-100 rounded-[16px] text-[10px] font-black text-zinc-600 hover:bg-zinc-100 disabled:opacity-40 disabled:cursor-not-allowed uppercase tracking-[0.2em] transition-all active:scale-95"
+                        >
+                            Previous Frame
+                        </button>
+                        <div className="flex items-center gap-2">
+                            {[...Array(totalPages)].map((_, i) => (
+                                <button 
+                                    key={i}
+                                    onClick={() => setCurrentPage(i + 1)}
+                                    className={`w-10 h-10 rounded-full text-xs font-black transition-all border ${currentPage === i + 1 ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-500/20' : 'bg-transparent text-zinc-500 border-transparent hover:bg-zinc-50 hover:border-zinc-200'}`}
+                                >
+                                    {i + 1}
+                                </button>
+                            ))}
+                        </div>
+                        <button 
+                            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                            disabled={currentPage === totalPages}
+                            className="px-6 py-3 bg-zinc-50 border border-zinc-100 rounded-[16px] text-[10px] font-black text-zinc-600 hover:bg-zinc-100 disabled:opacity-40 disabled:cursor-not-allowed uppercase tracking-[0.2em] transition-all active:scale-95"
+                        >
+                            Next Frame
+                        </button>
+                    </div>
+                )}
+              </>
             ) : (
               <div className="bg-white p-24 rounded-[60px] border border-zinc-100 flex flex-col items-center justify-center text-center shadow-sm relative overflow-hidden group">
                 <div className="w-32 h-32 bg-zinc-50 rounded-full flex items-center justify-center mb-10 text-zinc-300 border border-zinc-100 shadow-inner">

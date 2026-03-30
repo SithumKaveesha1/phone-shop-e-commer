@@ -63,17 +63,17 @@ const Hero = () => {
             </h1>
             <div className="flex flex-wrap justify-center gap-8 md:gap-16 mt-12">
                 {[
-                    { icon: <Smartphone size={28} />, label: 'iPhone 17' },
-                    { icon: <Laptop size={28} />, label: 'Mac Pro' },
-                    { icon: <Watch size={28} />, label: 'Watch Ultra' },
-                    { icon: <Headphones size={28} />, label: 'Studio' }
+                    { icon: <Smartphone size={28} />, label: 'iPhone 17', path: '/products?category=iPhone' },
+                    { icon: <Laptop size={28} />, label: 'Mac Pro', path: '/products?category=Mac' },
+                    { icon: <Watch size={28} />, label: 'Watch Ultra', path: '/products?category=Watch' },
+                    { icon: <Headphones size={28} />, label: 'Studio', path: '/products?category=AirPods' }
                 ].map((item, i) => (
-                    <div key={i} className="flex flex-col items-center gap-4 text-white/40 hover:text-white transition-all duration-700 cursor-default group">
+                    <Link key={i} to={item.path} className="flex flex-col items-center gap-4 text-white/40 hover:text-white transition-all duration-700 group">
                         <div className="p-4 bg-white/5 backdrop-blur-md rounded-2xl border border-white/5 group-hover:border-blue-500/30 group-hover:bg-blue-600 group-hover:shadow-2xl transition-all">
                              {item.icon}
                         </div>
                         <span className="text-[9px] font-black uppercase tracking-[0.4em] opacity-50 group-hover:opacity-100">{item.label}</span>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>

@@ -8,26 +8,28 @@ import { Input } from '../components/ui/input';
 const CheckoutStepper = ({ currentStep }) => {
     const steps = ['Shipping', 'Payment', 'Review', 'Success'];
     return (
-        <div className="flex items-center justify-center mb-16 relative z-10">
+        <div className="flex items-center justify-center mb-16 relative z-10 w-full max-w-2xl mx-auto">
             {steps.map((step, index) => (
                 <React.Fragment key={step}>
                     <div className="flex flex-col items-center relative">
                         <div className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-700 ${
-                            index <= currentStep 
-                            ? 'bg-blue-600 border-blue-500 text-white shadow-[0_0_25px_rgba(59,130,246,0.4)]' 
-                            : 'bg-zinc-900 border-white/5 text-zinc-600'
+                            index < currentStep 
+                            ? 'bg-blue-600 border-blue-600 text-white shadow-sm' 
+                            : index === currentStep
+                            ? 'bg-white border-blue-600 text-blue-600 shadow-sm shadow-blue-500/10'
+                            : 'bg-zinc-50 border-zinc-200 text-zinc-400'
                         }`}>
                             {index < currentStep ? <Check size={22} className="stroke-[3]" /> : <span className="font-black">{index + 1}</span>}
                         </div>
                         <span className={`absolute -bottom-8 text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap ${
-                            index <= currentStep ? 'text-blue-500' : 'text-zinc-700'
+                            index <= currentStep ? 'text-zinc-900' : 'text-zinc-400'
                         }`}>
                             {step}
                         </span>
                     </div>
                     {index < steps.length - 1 && (
-                        <div className={`w-12 sm:w-24 md:w-32 h-[2px] mx-2 rounded-full transition-all duration-1000 ${
-                            index < currentStep ? 'bg-gradient-to-r from-blue-600 to-blue-400' : 'bg-zinc-900'
+                        <div className={`flex-1 h-[2px] mx-2 sm:mx-4 rounded-full transition-all duration-1000 ${
+                            index < currentStep ? 'bg-blue-600' : 'bg-zinc-200'
                         }`}></div>
                     )}
                 </React.Fragment>
@@ -60,117 +62,117 @@ const Shipping = () => {
     };
 
     return (
-        <div className="pt-28 pb-20 min-h-screen bg-black flex flex-col items-center relative overflow-hidden">
-            {/* Background Glows */}
-            <div className="mesh-glow bg-blue-600/10 w-[800px] h-[800px] -top-40 -left-60 opacity-30 blur-[180px] animate-pulse" />
-            <div className="mesh-glow bg-purple-600/10 w-[600px] h-[600px] bottom-0 right-0 opacity-20 blur-[150px]" />
-
+        <div className="pt-28 pb-20 min-h-screen bg-[#f5f5f7] flex flex-col items-center relative overflow-hidden">
             <div className="w-full max-w-4xl px-4 relative z-10">
                 <CheckoutStepper currentStep={0} />
 
-                <div className="glass-card rounded-[40px] border border-white/5 overflow-hidden shadow-2xl">
+                <div className="bg-white rounded-[40px] border border-zinc-200 overflow-hidden shadow-sm mt-8">
                     <div className="p-8 md:p-14">
                         <div className="flex items-center gap-5 mb-12">
-                            <div className="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-500 border border-blue-500/20 shadow-[0_0_20px_rgba(59,130,246,0.1)]">
+                            <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 border border-blue-100 shadow-sm">
                                 <MapPin size={28} />
                             </div>
                             <div>
-                                <h2 className="text-3xl font-black text-white tracking-tighter uppercase">Deployment Location</h2>
-                                <p className="text-zinc-500 text-xs font-black uppercase tracking-widest mt-1">Specify your hardware destination</p>
+                                <h2 className="text-3xl font-black text-zinc-900 tracking-tighter">Shipping Details</h2>
+                                <p className="text-zinc-500 text-xs font-bold uppercase tracking-widest mt-1">Specify your delivery address</p>
                             </div>
                         </div>
 
                         <form onSubmit={handleSubmit} className="space-y-8">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="space-y-3">
-                                    <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">Operational First Name</label>
+                                    <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">First Name</label>
                                     <div className="relative">
-                                        <User className="absolute left-5 top-4.5 text-zinc-600" size={18} />
+                                        <User className="absolute left-5 top-4.5 text-zinc-400" size={18} />
                                         <Input 
                                             name="firstname"
                                             value={formData.firstname}
                                             onChange={handleChange}
-                                            className="pl-14 h-16 rounded-2xl bg-white/5 border-white/5 focus:border-blue-500/50 transition-all font-black text-white placeholder-zinc-700"
+                                            placeholder="Enter your first name"
+                                            className="pl-14 h-16 rounded-2xl bg-zinc-50 border-zinc-200 focus:border-blue-500 transition-all font-bold text-zinc-900 placeholder:text-zinc-400"
                                             required
                                         />
                                     </div>
                                 </div>
                                 <div className="space-y-3">
-                                    <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">Operational Last Name</label>
+                                    <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">Last Name</label>
                                     <Input 
                                         name="lastname"
                                         value={formData.lastname}
                                         onChange={handleChange}
-                                        className="h-16 rounded-2xl bg-white/5 border-white/5 focus:border-blue-500/50 transition-all font-black text-white"
+                                        placeholder="Enter your last name"
+                                        className="h-16 rounded-2xl bg-zinc-50 border-zinc-200 focus:border-blue-500 transition-all font-bold text-zinc-900 placeholder:text-zinc-400 px-5"
                                         required
                                     />
                                 </div>
                             </div>
 
                             <div className="space-y-3">
-                                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">Communication Link (Mobile)</label>
+                                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">Mobile Number</label>
                                 <div className="relative">
-                                    <Phone className="absolute left-5 top-4.5 text-zinc-600" size={18} />
+                                    <Phone className="absolute left-5 top-4.5 text-zinc-400" size={18} />
                                     <Input 
                                         name="phoneNo"
                                         value={formData.phoneNo}
                                         onChange={handleChange}
                                         placeholder="07X XXX XXXX"
-                                        className="pl-14 h-16 rounded-2xl bg-white/5 border-white/5 focus:border-blue-500/50 transition-all font-black text-white placeholder-zinc-800"
+                                        className="pl-14 h-16 rounded-2xl bg-zinc-50 border-zinc-200 focus:border-blue-500 transition-all font-bold text-zinc-900 placeholder:text-zinc-400"
                                         required
                                     />
                                 </div>
                             </div>
 
                             <div className="space-y-3">
-                                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">Physical Coordinates (Address)</label>
+                                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">Street Address</label>
                                 <Input 
                                     name="address"
                                     value={formData.address}
                                     onChange={handleChange}
                                     placeholder="House No, Street Name"
-                                    className="h-16 rounded-2xl bg-white/5 border-white/5 focus:border-blue-500/50 transition-all font-black text-white placeholder-zinc-800"
+                                    className="h-16 rounded-2xl bg-zinc-50 border-zinc-200 focus:border-blue-500 transition-all font-bold text-zinc-900 placeholder:text-zinc-400 px-5"
                                     required
                                 />
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="space-y-3">
-                                    <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">City Hub</label>
+                                    <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">City</label>
                                     <Input 
                                         name="city"
                                         value={formData.city}
                                         onChange={handleChange}
-                                        className="h-16 rounded-2xl bg-white/5 border-white/5 focus:border-blue-500/50 transition-all font-black text-white"
+                                        placeholder="Enter city"
+                                        className="h-16 rounded-2xl bg-zinc-50 border-zinc-200 focus:border-blue-500 transition-all font-bold text-zinc-900 placeholder:text-zinc-400 px-5"
                                         required
                                     />
                                 </div>
                                 <div className="space-y-3">
-                                    <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">Zone Code (Zip)</label>
+                                    <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">ZIP / Postal Code</label>
                                     <Input 
                                         name="zipCode"
                                         value={formData.zipCode}
                                         onChange={handleChange}
-                                        className="h-16 rounded-2xl bg-white/5 border-white/5 focus:border-blue-500/50 transition-all font-black text-white"
+                                        placeholder="Enter ZIP code"
+                                        className="h-16 rounded-2xl bg-zinc-50 border-zinc-200 focus:border-blue-500 transition-all font-bold text-zinc-900 placeholder:text-zinc-400 px-5"
                                         required
                                     />
                                 </div>
                             </div>
 
-                            <div className="pt-10 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6">
+                            <div className="pt-10 border-t border-zinc-100 flex flex-col sm:flex-row items-center justify-between gap-6">
                                 <Button 
                                     type="button" 
                                     variant="ghost" 
                                     onClick={() => navigate('/cart')}
-                                    className="text-zinc-500 font-black uppercase tracking-widest hover:text-white transition-colors"
+                                    className="text-zinc-500 font-black uppercase tracking-[0.2em] hover:text-zinc-900 hover:bg-zinc-100 rounded-xl px-6 transition-colors"
                                 >
-                                    Cancel & Return
+                                    Return to Cart
                                 </Button>
                                 <Button 
                                     type="submit" 
-                                    className="w-full sm:w-auto bg-gradient-to-r from-blue-700 to-blue-500 hover:from-blue-600 hover:to-blue-400 text-white font-black h-16 px-14 rounded-2xl shadow-2xl shadow-blue-500/20 flex items-center gap-3 transition-all active:scale-95 uppercase tracking-widest text-xs"
+                                    className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-black h-16 px-14 rounded-2xl shadow-xl shadow-blue-500/20 flex items-center gap-3 transition-all active:scale-95 uppercase tracking-[0.2em] text-xs"
                                 >
-                                    Proceed to Interface
+                                    Continue to Payment
                                     <ArrowRight size={20} />
                                 </Button>
                             </div>

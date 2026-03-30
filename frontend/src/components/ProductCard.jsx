@@ -6,7 +6,7 @@ import { addToCart } from '../redux/cartSlice';
 import { Link } from 'react-router-dom';
 import { deleteProductById } from '../lib/api';
 
-const ProductCard = ({ product, onDelete }) => {
+const ProductCard = ({ product, onDelete, viewMode = 'grid' }) => {
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.user);
   const isAdmin = user?.role === 'admin' && user?.email === 'sithumkaveesha1212@gmail.com';
@@ -50,7 +50,7 @@ const ProductCard = ({ product, onDelete }) => {
     : product.image;
 
   return (
-    <div className="bg-white rounded-[40px] transition-all duration-700 overflow-hidden border border-zinc-100 flex flex-col group h-full relative hover:shadow-[0_30px_60px_rgba(0,0,0,0.06)] hover:-translate-y-2">
+    <div className={`bg-white transition-all duration-700 overflow-hidden border border-zinc-100 flex group relative hover:shadow-[0_30px_60px_rgba(0,0,0,0.06)] hover:-translate-y-2 ${viewMode === 'list' ? 'flex-row rounded-[32px] h-[260px]' : 'flex-col rounded-[40px] h-full'}`}>
       
       {/* Sold Out Badge */}
       {isSoldOut && (
@@ -80,7 +80,7 @@ const ProductCard = ({ product, onDelete }) => {
       )}
 
       {/* Image Container */}
-      <Link to={`/product/${product._id}`} className="block relative aspect-square overflow-hidden bg-zinc-50/50 transition-colors duration-700">
+      <Link to={`/product/${product._id}`} className={`block relative overflow-hidden bg-zinc-50/50 transition-colors duration-700 ${viewMode === 'list' ? 'w-1/3 min-w-[240px] border-r border-zinc-100 h-full flex-shrink-0' : 'aspect-square'}`}>
         <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
         
         <img
@@ -103,7 +103,7 @@ const ProductCard = ({ product, onDelete }) => {
       </Link>
 
       {/* Content */}
-      <div className="p-8 pb-10 flex flex-col items-center text-center flex-grow relative">
+      <div className={`p-8 flex flex-col flex-grow relative ${viewMode === 'list' ? 'items-start text-left justify-center pb-8' : 'items-center text-center pb-10'}`}>
         <div className="flex gap-1.5 mb-6">
             {colors.map((color, i) => (
                 <div 
@@ -115,13 +115,16 @@ const ProductCard = ({ product, onDelete }) => {
         </div>
 
         <Link to={`/product/${product._id}`} className="mb-3">
-          <h3 className="font-black text-zinc-900 text-base leading-tight group-hover:text-blue-600 transition-all tracking-tight h-10 line-clamp-2">
+          <h3 className={`font-black text-zinc-900 leading-tight group-hover:text-blue-600 transition-all tracking-tight line-clamp-2 ${viewMode === 'list' ? 'text-2xl h-auto mb-1' : 'text-base h-10'}`}>
             {product.name}
           </h3>
+          {viewMode === 'list' && (
+              <p className="text-zinc-500 text-[11px] font-bold uppercase tracking-widest mt-2 bg-zinc-50 px-3 py-1 w-fit rounded-lg">{product.category}</p>
+          )}
         </Link>
         
-        <div className="mt-auto flex flex-col items-center gap-3">
-          <span className="text-xl font-black text-blue-600 tracking-tighter">
+        <div className={`mt-auto flex ${viewMode === 'list' ? 'flex-row items-center gap-6 mt-6' : 'flex-col items-center gap-3'}`}>
+          <span className={`${viewMode === 'list' ? 'text-3xl' : 'text-xl'} font-black text-blue-600 tracking-tighter`}>
               LKR {product.price.toLocaleString('en-LK')}
           </span>
           
@@ -137,7 +140,7 @@ const ProductCard = ({ product, onDelete }) => {
         {/* Floating Add to Cart Button */}
         <button 
           onClick={handleAddToCart}
-          className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-zinc-900 text-white w-14 h-14 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 group-hover:-bottom-4 transition-all hover:scale-110 active:scale-90 shadow-2xl z-30"
+          className={`absolute bg-zinc-900 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:scale-110 active:scale-90 shadow-2xl z-30 ${viewMode === 'list' ? 'w-16 h-16 right-8 top-1/2 -translate-y-1/2' : 'w-14 h-14 -bottom-6 left-1/2 -translate-x-1/2 group-hover:-bottom-4'}`}
         >
           <ShoppingCart size={22} strokeWidth={2.5} />
         </button>
