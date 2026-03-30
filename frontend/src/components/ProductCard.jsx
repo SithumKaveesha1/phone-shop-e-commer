@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { toast } from 'sonner';
-import { ShoppingCart, Trash2, Pencil, Star } from 'lucide-react';
+import { ShoppingCart, Trash2, Pencil, Search, ArrowRight } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../redux/cartSlice';
 import { Link } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { deleteProductById } from '../lib/api';
 const ProductCard = ({ product, onDelete }) => {
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.user);
-  const isAdmin = user?.role === 'admin';
+  const isAdmin = user?.role === 'admin' && user?.email === 'sithumkaveesha1212@gmail.com';
   const [deleting, setDeleting] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -33,97 +33,136 @@ const ProductCard = ({ product, onDelete }) => {
     }
   };
 
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const colors = product.colors && product.colors.length > 0 
+    ? product.colors 
+    : ['#18181b', '#d4d4d8', '#3b82f6', '#fb7185', '#facc15']; // Default fallback colors
+
+  const isSoldOut = product.price > 1000000 || product.name.includes("Mini"); 
+
+  const handleColorChange = (index) => {
+    setActiveIndex(index);
+  };
+
+  const currentImage = (product.images && product.images[activeIndex]) 
+    ? product.images[activeIndex].url 
+    : product.image;
+
   return (
-    <div className="bg-white rounded-2xl transition-all duration-500 overflow-hidden border border-zinc-100 flex flex-col group h-full relative hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:-translate-y-1">
+    <div className="bg-white rounded-[40px] transition-all duration-700 overflow-hidden border border-zinc-100 flex flex-col group h-full relative hover:shadow-[0_30px_60px_rgba(0,0,0,0.06)] hover:-translate-y-2">
       
-      {/* Admin Actions */}
+      {/* Sold Out Badge */}
+      {isSoldOut && (
+        <div className="absolute top-6 left-6 z-20 bg-blue-600 text-white px-3 py-1 rounded-full shadow-lg">
+            <span className="text-[8px] font-black uppercase tracking-[0.2em]">SOLD OUT</span>
+        </div>
+      )}
+
+      {/* Admin Actions Overlay */}
       {isAdmin && (
-        <div className="absolute top-4 right-4 z-10 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="absolute top-6 right-6 z-30 flex flex-col gap-3 opacity-0 group-hover:opacity-100 transition-all">
           <Link
             to={`/admin/edit-product/${product._id}`}
-            className="w-10 h-10 bg-white/90 backdrop-blur-md border border-zinc-200 rounded-xl flex items-center justify-center text-zinc-600 hover:text-black hover:border-black transition-all shadow-xl"
+            className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-zinc-400 hover:text-blue-600 hover:scale-110 transition-all border border-zinc-100 shadow-xl"
+            title="Edit Product"
           >
-            <Pencil size={16} />
+            <Pencil size={18} strokeWidth={3} />
           </Link>
           <button
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowConfirm(true); }}
-            disabled={deleting}
-            className="w-10 h-10 bg-red-600 border border-red-700 rounded-xl flex items-center justify-center text-white hover:bg-red-700 transition-all shadow-xl disabled:opacity-50"
+            onClick={(e) => { e.preventDefault(); setShowConfirm(true); }}
+            className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-zinc-400 hover:text-red-500 hover:scale-110 transition-all border border-zinc-100 shadow-xl"
+            title="Delete Product"
           >
-            <Trash2 size={16} />
+            <Trash2 size={18} strokeWidth={3} />
           </button>
         </div>
       )}
 
       {/* Image Container */}
-      <Link to={`/product/${product._id}`} className="block relative aspect-square overflow-hidden bg-zinc-50/50">
+      <Link to={`/product/${product._id}`} className="block relative aspect-square overflow-hidden bg-zinc-50/50 transition-colors duration-700">
+        <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        
         <img
-          src={product.image || "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80"}
+          src={currentImage || "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80"}
           alt={product.name}
-          className="w-full h-full object-contain p-8 transition-transform duration-700 group-hover:scale-110 mix-blend-multiply"
+          className={`w-full h-full object-contain p-10 relative z-10 transition-all duration-1000 group-hover:scale-105 drop-shadow-[0_10px_20px_rgba(0,0,0,0.05)] ${isSoldOut ? 'opacity-40 grayscale' : ''}`}
         />
-        {/* Brand Badge */}
-        <div className="absolute bottom-4 left-4 bg-black/5 backdrop-blur-md px-3 py-1 rounded-full border border-black/5">
-            <span className="text-[10px] font-black text-black uppercase tracking-widest">{product.brand || 'Premium'}</span>
+        
+        {/* Color variants switcher positioned on the right like in screenshot */}
+        <div className="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2.5 z-20 bg-white/60 backdrop-blur-xl p-1.5 rounded-full border border-white/80 opacity-0 group-hover:opacity-100 transition-all hover:scale-110">
+            {colors.slice(0, 4).map((color, i) => (
+                <button 
+                  key={i} 
+                  onClick={(e) => { e.preventDefault(); handleColorChange(i); }}
+                  className={`w-3 h-3 rounded-full transition-all ${activeIndex === i ? 'ring-2 ring-blue-500 ring-offset-2 scale-110' : 'hover:scale-110'}`}
+                  style={{ backgroundColor: color }}
+                />
+            ))}
         </div>
       </Link>
 
       {/* Content */}
-      <div className="p-6 flex flex-col flex-grow">
-        <div className="flex items-center gap-1 mb-2">
-            {[...Array(5)].map((_, i) => (
-                <Star key={i} size={10} className="fill-primary text-primary" />
+      <div className="p-8 pb-10 flex flex-col items-center text-center flex-grow relative">
+        <div className="flex gap-1.5 mb-6">
+            {colors.map((color, i) => (
+                <div 
+                    key={i} 
+                    className={`w-2 h-2 rounded-full border border-zinc-100 shadow-sm ${activeIndex === i ? 'bg-blue-600 scale-125' : 'bg-zinc-200'}`}
+                    style={{ backgroundColor: activeIndex === i ? undefined : color }}
+                />
             ))}
-            <span className="text-[10px] text-zinc-400 font-bold ml-1">(4.9)</span>
         </div>
 
-        <Link to={`/product/${product._id}`}>
-          <h3 className="font-bold text-zinc-900 text-base mb-2 line-clamp-2 leading-tight group-hover:text-primary transition-colors">
+        <Link to={`/product/${product._id}`} className="mb-3">
+          <h3 className="font-black text-zinc-900 text-base leading-tight group-hover:text-blue-600 transition-all tracking-tight h-10 line-clamp-2">
             {product.name}
           </h3>
         </Link>
         
-        <div className="mt-auto pt-4 flex flex-col gap-4">
-          <div className="flex flex-col">
-            <span className="text-2xl font-black text-black">
-                LKR {product.price.toLocaleString('en-LK')}
-            </span>
-            <div className="flex items-center gap-2 mt-1">
-                <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest leading-none">As low as</span>
-                <span className="text-[10px] font-black text-primary border border-primary/20 bg-primary/5 px-1.5 py-0.5 rounded uppercase">KOKO</span>
-            </div>
+        <div className="mt-auto flex flex-col items-center gap-3">
+          <span className="text-xl font-black text-blue-600 tracking-tighter">
+              LKR {product.price.toLocaleString('en-LK')}
+          </span>
+          
+          <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-50 border border-zinc-100">
+              <span className="text-[8px] font-black text-zinc-400 uppercase tracking-widest">or</span>
+              <div className="flex items-center gap-1.5 text-[10px] font-black text-zinc-500 tracking-tight">
+                  <span>3 X LKR {(product.price / 3).toLocaleString('en-LK', {maximumFractionDigits: 0})} with</span>
+                  <span className="text-blue-500 italic uppercase">Koko</span>
+              </div>
           </div>
-
-          <button
-            onClick={(e) => { e.preventDefault(); handleAddToCart(); }}
-            className="w-full bg-black text-white py-4 rounded-xl font-bold text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-zinc-800 active:scale-[0.98] transition-all shadow-xl shadow-black/5"
-          >
-            <ShoppingCart size={16} strokeWidth={2.5} />
-            Add to Cart
-          </button>
         </div>
+
+        {/* Floating Add to Cart Button */}
+        <button 
+          onClick={handleAddToCart}
+          className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-zinc-900 text-white w-14 h-14 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 group-hover:-bottom-4 transition-all hover:scale-110 active:scale-90 shadow-2xl z-30"
+        >
+          <ShoppingCart size={22} strokeWidth={2.5} />
+        </button>
       </div>
 
       {/* Confirm Delete Overlay */}
       {showConfirm && (
-        <div className="absolute inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-6 animate-in fade-in duration-300">
-            <div className="bg-white p-8 rounded-3xl w-full max-w-xs text-center shadow-2xl">
-                <div className="w-16 h-16 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Trash2 size={24} />
+        <div className="absolute inset-0 z-50 bg-white/95 backdrop-blur-xl flex items-center justify-center p-8 animate-in fade-in duration-500">
+            <div className="bg-white p-8 rounded-[40px] w-full border border-zinc-100 text-center shadow-2xl">
+                <div className="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6 border border-red-100">
+                    <Trash2 size={28} strokeWidth={2.5} />
                 </div>
-                <h4 className="text-xl font-black text-zinc-900 mb-2">Delete Item?</h4>
-                <p className="text-sm text-zinc-500 mb-8 font-medium">This cannot be undone.</p>
+                <h4 className="text-xl font-black text-zinc-900 mb-2 tracking-tighter">Remove product?</h4>
+                <p className="text-[10px] text-zinc-500 mb-8 font-bold uppercase tracking-widest leading-relaxed">This item will be permanently removed.</p>
                 <div className="flex flex-col gap-3">
                     <button 
                       onClick={handleDelete}
                       disabled={deleting}
-                      className="w-full bg-red-600 text-white py-4 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-red-700 transition-all"
+                      className="w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-xl font-black text-[9px] uppercase tracking-[0.2em] shadow-lg shadow-red-500/20 transition-all active:scale-95"
                     >
-                      {deleting ? 'Deleting...' : 'Confirm Delete'}
+                      {deleting ? 'Removing...' : 'Confirm Remove'}
                     </button>
                     <button 
                       onClick={() => setShowConfirm(false)}
-                      className="w-full bg-zinc-100 text-zinc-600 py-4 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-zinc-200 transition-all"
+                      className="w-full bg-zinc-100 text-zinc-500 py-4 rounded-xl font-black text-[9px] uppercase tracking-[0.2em] hover:bg-zinc-200 transition-all"
                     >
                       Cancel
                     </button>

@@ -4,14 +4,16 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../redux/cartSlice';
 import { toast } from 'sonner';
-import { Button } from '../components/ui/button';
-import { ChevronLeft, ChevronRight, ShoppingCart, Star, ShieldCheck, Truck, Play, Info } from 'lucide-react';
+import { ChevronUp, ChevronDown, Maximize2, GitCompare, Info, Check } from 'lucide-react';
 
 const ProductDetail = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [activeImage, setActiveImage] = useState(null);
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [quantity, setQuantity] = useState(1);
+    const [selectedStorage, setSelectedStorage] = useState("");
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -22,11 +24,16 @@ const ProductDetail = () => {
                 if (res.data.success) {
                     const p = res.data.product;
                     setProduct(p);
-                    // Set active image from images array or single image field
                     if (p.images && p.images.length > 0) {
                         setActiveImage(p.images[0].url);
+                        setActiveIndex(0);
                     } else {
                         setActiveImage(p.image);
+                    }
+                    
+                    // Handled: Don't set default storage to show range initially
+                    if (!["iPhone", "iPad", "Mac"].includes(p.category)) {
+                        setSelectedStorage("Standard");
                     }
                 }
             } catch (error) {
@@ -41,156 +48,230 @@ const ProductDetail = () => {
 
     const handleAddToCart = () => {
         if (!product) return;
-        dispatch(addToCart(product));
-        toast.success(`${product.name} added to cart!`);
+        dispatch(addToCart({ ...product, price: currentPrice, storage: selectedStorage, quantity }));
+        toast.success(`${product.name} (${selectedStorage}) added to cart!`);
     };
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-white pt-32 flex justify-center">
+            <div className="min-h-screen bg-black pt-32 flex justify-center">
                 <div className="animate-pulse flex flex-col md:flex-row gap-12 max-w-7xl w-full px-6">
-                    <div className="w-full md:w-1/2 h-[500px] bg-gray-200 rounded-3xl"></div>
+                    <div className="w-full md:w-1/2 h-[500px] bg-zinc-900/50 rounded-[40px] glass-card"></div>
                     <div className="flex-1 space-y-6">
-                        <div className="h-10 bg-gray-200 rounded w-3/4"></div>
-                        <div className="h-6 bg-gray-200 rounded w-1/4"></div>
-                        <div className="h-24 bg-gray-200 rounded w-full"></div>
-                        <div className="h-12 bg-gray-200 rounded w-1/2"></div>
+                        <div className="h-10 bg-zinc-900/50 rounded-full w-3/4 glass-card"></div>
+                        <div className="h-6 bg-zinc-900/50 rounded-full w-1/4 glass-card"></div>
+                        <div className="h-40 bg-zinc-900/50 rounded-[32px] w-full glass-card"></div>
                     </div>
                 </div>
             </div>
         );
     }
 
-    if (!product) {
-        return (
-            <div className="min-h-screen pt-32 text-center">
-                <h2 className="text-2xl font-bold text-gray-800">Product not found</h2>
-                <Link to="/products" className="text-pink-600 hover:underline mt-4 inline-block">Back to Products</Link>
-            </div>
-        );
-    }
+    if (!product) return null;
+
+    const isMobile = ["iPhone", "iPad"].includes(product.category);
+    const isMac = product.category === "Mac";
+    const hasStorage = true; // Always show the section for consistent UI
+
+    const storageOptions = isMobile 
+        ? ["128GB", "256GB", "512GB", "1TB"] 
+        : isMac 
+            ? ["256GB", "512GB", "1TB", "2TB"] 
+            : ["Standard"];
+
+    const getPriceForStorage = (storage) => {
+        let price = product.price;
+        if (isMobile) {
+            if (storage === "256GB") price += 35000;
+            if (storage === "512GB") price += 75000;
+            if (storage === "1TB") price += 125000;
+        } else if (isMac) {
+            if (storage === "512GB") price += 65000;
+            if (storage === "1TB") price += 145000;
+            if (storage === "2TB") price += 285000;
+        }
+        return price;
+    };
 
     const galleryItems = product.images && product.images.length > 0 
         ? product.images 
         : [{ url: product.image, _id: 'default' }];
 
-    return (
-        <div className="min-h-screen bg-gray-50/50 pt-24 pb-16 px-4">
-            <div className="max-w-7xl mx-auto">
-                <Link to="/products" className="inline-flex items-center gap-2 text-gray-500 hover:text-pink-600 font-bold mb-8 transition-colors group">
-                    <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center group-hover:bg-pink-50">
-                        <ChevronLeft size={20} />
-                    </div>
-                    Back to Store
-                </Link>
+    const productColors = product.colors && product.colors.length > 0 
+        ? product.colors 
+        : ['#1d1d1f', '#f5f5f7', '#dcd7f2', '#637599', '#c4c9a4'];
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 bg-white rounded-[3rem] p-8 lg:p-12 shadow-2xl shadow-gray-200/50 border border-white">
-                    {/* Left: Interactive Image Gallery */}
-                    <div className="lg:col-span-6 space-y-6">
-                        {/* Main Viewer */}
-                        <div className="relative aspect-[4/5] sm:aspect-square bg-white rounded-[2.5rem] overflow-hidden group border border-gray-100 shadow-sm flex items-center justify-center p-8">
-                            <img 
-                                src={activeImage} 
-                                alt={product.name} 
-                                className="max-h-full object-contain transition-transform duration-700 group-hover:scale-105"
-                            />
-                            {/* Play Icon Overlay */}
-                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-                                <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border-2 border-white/50 shadow-2xl">
-                                    <Play className="text-white fill-white ml-1" size={40} />
+    const features = [
+        "6.3\" Super Retina XDR display",
+        "ProMotion • Always-On • Dynamic Island",
+        "Aluminum design",
+        "Action Button • Camera Control",
+        "A19 chip",
+        "5-core GPU • Ray tracing",
+        "Up to 30h video playback",
+        "12MP TrueDepth front camera",
+        "Ultra-stable video • Dual Capture",
+        "48MP Dual Fusion camera",
+        "Main + Ultra Wide • 24MP/48MP photos",
+        "Macro • Next-gen Portraits • 4K Dolby Vision"
+    ];
+
+    const minPrice = getPriceForStorage(storageOptions[0]);
+    const maxPrice = getPriceForStorage(storageOptions[storageOptions.length - 1]);
+    const currentPrice = selectedStorage ? getPriceForStorage(selectedStorage) : minPrice;
+
+    return (
+        <div className="min-h-screen bg-black pt-24 pb-20 relative overflow-hidden">
+            {/* Background Glows */}
+            <div className="mesh-glow bg-blue-600/10 w-[800px] h-[800px] -top-40 -left-60 opacity-30 blur-[180px] animate-pulse" />
+            <div className="mesh-glow bg-purple-600/10 w-[600px] h-[600px] bottom-0 right-0 opacity-20 blur-[150px]" />
+
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+                
+                {/* Breadcrumbs */}
+                <nav className="flex items-center gap-2 text-[10px] font-black text-zinc-500 mb-12 uppercase tracking-[0.3em] bg-white/5 w-fit px-6 py-2 rounded-full border border-white/5 backdrop-blur-3xl">
+                    <Link to="/" className="hover:text-blue-400 transition-colors">Home</Link>
+                    <span className="text-zinc-800">/</span>
+                    <Link to={`/products?category=${product.category}`} className="hover:text-blue-400 transition-colors">{product.category}</Link>
+                    <span className="text-zinc-800">/</span>
+                    <span className="text-white font-black">{product.name}</span>
+                </nav>
+
+                <div className="grid grid-cols-1 lg:grid-cols-11 gap-20">
+                    
+                    {/* Left: Gallery Column */}
+                    <div className="lg:col-span-6 flex flex-col md:flex-row gap-8">
+                        {/* Thumbnails Sidebar */}
+                        <div className="flex flex-row md:flex-col gap-4 order-2 md:order-1 overflow-x-auto md:overflow-y-auto whitespace-nowrap scrollbar-hide md:max-h-[600px] pb-4 md:pb-0">
+                            {galleryItems.map((item, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={() => { setActiveImage(item.url); setActiveIndex(idx); }}
+                                    className={`relative w-24 h-24 flex-shrink-0 rounded-[28px] overflow-hidden border-2 transition-all p-3 glass-card ${
+                                        activeIndex === idx ? 'border-blue-500 shadow-[0_0_30px_rgba(59,130,246,0.2)]' : 'border-white/5 hover:border-white/20'
+                                    }`}
+                                >
+                                    <img src={item.url} className="w-full h-full object-contain" alt="Thumb" />
+                                </button>
+                            ))}
+                            <button className="flex items-center justify-center w-24 h-12 glass-card rounded-2xl text-zinc-600 mt-2 hidden md:flex border border-white/5 hover:text-white transition-colors">
+                                <ChevronDown size={24} />
+                            </button>
+                        </div>
+
+                        {/* Main Image Viewer */}
+                        <div className="flex-1 glass-card rounded-[60px] aspect-square flex items-center justify-center p-16 relative overflow-hidden order-1 md:order-2 group border border-white/5 shadow-2xl">
+                            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
+                            <div className="absolute inset-0 bg-blue-600/5 blur-[120px] rounded-full scale-50 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                            
+                            <img src={activeImage} className="max-h-full object-contain relative z-10 drop-shadow-[0_40px_80px_rgba(0,0,0,0.6)] animate-in fade-in zoom-in-95 duration-1000" alt={product.name} />
+                            
+                            <button className="absolute bottom-12 left-12 w-14 h-14 glass-card rounded-full flex items-center justify-center text-zinc-400 hover:text-white shadow-2xl transition-all hover:scale-110 border border-white/10 relative z-20 overflow-hidden">
+                                <Maximize2 size={24} />
+                                <div className="absolute inset-0 bg-blue-500/10 opacity-0 hover:opacity-100 transition-opacity" />
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Right: Info Column */}
+                    <div className="lg:col-span-5 flex flex-col space-y-12 animate-in slide-in-from-right-8 duration-1000">
+                        <div className="space-y-4">
+                            <h1 className="text-5xl md:text-6xl font-black text-white tracking-tighter leading-none h-auto py-2">
+                                {product.name}
+                            </h1>
+                            
+                            <div className="flex flex-col gap-4">
+                                <span className={`text-4xl font-black tracking-tighter ${selectedStorage ? 'text-gradient-blue' : 'text-white'}`}>
+                                    {hasStorage && storageOptions.length > 1 && !selectedStorage ? (
+                                        `LKR ${minPrice.toLocaleString('en-LK')} - ${maxPrice.toLocaleString('en-LK')}`
+                                    ) : (
+                                        `LKR ${currentPrice.toLocaleString('en-LK')}`
+                                    )}
+                                </span>
+                                <div className="flex items-center gap-3 text-[10px] font-black text-zinc-500 uppercase tracking-widest bg-white/5 p-3 rounded-2xl w-fit border border-white/5">
+                                    <span>or</span>
+                                    <span>3 X LKR {(currentPrice / 3).toLocaleString('en-LK', {maximumFractionDigits: 0})} with</span>
+                                    <span className="text-blue-500 italic px-1">KOKO</span>
+                                    <Info size={14} className="cursor-pointer hover:text-white transition-colors" />
                                 </div>
                             </div>
                         </div>
 
-                        {/* Thumbnail Carousel with Arrows */}
-                        <div className="relative group/carousel px-2">
-                             <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide py-2 scroll-smooth" id="gallery-carousel">
-                                {galleryItems.map((item, idx) => (
+                        {/* Storage Selection */}
+                        <div className="space-y-6">
+                            <h4 className="text-[11px] font-black text-white uppercase tracking-[0.3em] ml-1">
+                                {isMobile || isMac ? "System Storage" : "Configuration"}
+                            </h4>
+                            <div className="flex flex-wrap gap-4">
+                                {storageOptions.map(size => (
                                     <button
-                                        key={idx}
-                                        onClick={() => setActiveImage(item.url)}
-                                        className={`relative w-24 h-24 flex-shrink-0 rounded-2xl overflow-hidden border-2 transition-all duration-300 bg-white p-2 ${
-                                            activeImage === item.url 
-                                                ? 'border-[#f97316] shadow-lg shadow-orange-100 scale-105' 
-                                                : 'border-transparent hover:border-gray-200'
+                                        key={size}
+                                        onClick={() => setSelectedStorage(size)}
+                                        className={`px-8 py-4 rounded-[20px] border-2 text-xs font-black uppercase tracking-widest transition-all ${
+                                            selectedStorage === size 
+                                            ? 'bg-blue-600 border-blue-500 text-white shadow-[0_0_30px_rgba(59,130,246,0.3)] scale-105' 
+                                            : 'bg-white/5 border-white/5 text-zinc-500 hover:text-white hover:bg-white/10 hover:border-white/10'
                                         }`}
                                     >
-                                        <img 
-                                            src={item.url} 
-                                            className="w-full h-full object-contain"
-                                        />
+                                        {size}
                                     </button>
                                 ))}
-                             </div>
-                             
-                             {/* Navigation Arrows */}
-                             <button 
-                                onClick={() => document.getElementById('gallery-carousel').scrollBy({ left: -200, behavior: 'smooth' })}
-                                className="absolute left-[-15px] top-[40%] -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg border border-gray-100 flex items-center justify-center text-gray-400 hover:text-[#f97316] opacity-0 group-hover/carousel:opacity-100 transition-all z-20"
-                             >
-                                <ChevronLeft size={24} />
-                             </button>
-                             <button 
-                                onClick={() => document.getElementById('gallery-carousel').scrollBy({ left: 200, behavior: 'smooth' })}
-                                className="absolute right-[-15px] top-[40%] -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg border border-gray-100 flex items-center justify-center text-gray-400 hover:text-[#f97316] opacity-0 group-hover/carousel:opacity-100 transition-all z-20"
-                             >
-                                <ChevronRight size={24} />
-                             </button>
+                            </div>
                         </div>
-                    </div>
 
-                    {/* Right: Product Info Section */}
-                    <div className="lg:col-span-6 flex flex-col h-full">
-                        <div className="mb-2">
-                             <span className="bg-pink-100 text-pink-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                                {product.brand}
-                             </span>
-                        </div>
-                        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight">
-                            {product.name}
-                        </h1>
-                        
-                        <div className="flex items-center gap-4 mb-8">
-                            <div className="flex bg-yellow-50 px-2 py-1 rounded-lg">
-                                {[...Array(5)].map((_, i) => (
-                                    <Star key={i} size={18} fill={i < 4 ? "#fbbf24" : "none"} stroke="#fbbf24" strokeWidth={1} />
+                        {/* Color Selection */}
+                        <div className="space-y-6">
+                            <h4 className="text-[11px] font-black text-white uppercase tracking-[0.3em] ml-1">Case Aesthetics</h4>
+                            <div className="flex items-center gap-6">
+                                {productColors.map((color, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => {
+                                            setActiveIndex(idx);
+                                            setActiveImage(product.images?.[idx]?.url || product.image);
+                                        }}
+                                        className={`w-12 h-12 rounded-full border-2 transition-all p-1 glass-card ${
+                                            activeIndex === idx ? 'border-blue-500 scale-125 shadow-[0_0_20px_rgba(59,130,246,0.3)]' : 'border-white/5 hover:border-white/20 hover:scale-110'
+                                        }`}
+                                    >
+                                        <div className="w-full h-full rounded-full shadow-inner" style={{ backgroundColor: color }} />
+                                    </button>
                                 ))}
                             </div>
-                            <span className="text-gray-400 text-sm font-medium">4.8 (120+ reviews)</span>
                         </div>
 
-                        <div className="bg-pink-50 p-6 rounded-3xl border border-pink-100 mb-8 inline-block self-start">
-                            <span className="text-pink-600 text-sm font-bold block mb-1">Current Price</span>
-                            <span className="text-4xl font-black text-gray-900">
-                                LKR {product.price.toLocaleString()}
-                            </span>
-                        </div>
-
-                        <p className="text-gray-600 text-lg leading-relaxed mb-10 max-w-xl">
-                            {product.description || "Experience next-level performance and elegant design with the all-new " + product.name + ". Engineered for those who demand excellence in every detail."}
-                        </p>
-
-                        {/* Features / Icons */}
-                        <div className="grid grid-cols-2 gap-6 mb-10">
-                            <div className="flex items-center gap-3 text-gray-600 bg-gray-50 p-4 rounded-2xl">
-                                <ShieldCheck className="text-pink-600" size={24} />
-                                <span className="text-sm font-semibold tracking-tight">1 Year Warranty</span>
+                        {/* Actions */}
+                        <div className="flex flex-col gap-6 pt-6">
+                            <div className="flex gap-6 h-16">
+                                <div className="flex items-center glass-card rounded-2xl overflow-hidden border border-white/5 px-2">
+                                    <button onClick={() => setQuantity(q => Math.max(1, q-1))} className="w-14 h-full flex items-center justify-center text-zinc-500 hover:text-white hover:bg-white/5 transition-all text-2xl font-black">-</button>
+                                    <span className="w-12 text-center font-black text-lg text-white">{quantity}</span>
+                                    <button onClick={() => setQuantity(q => q+1)} className="w-14 h-full flex items-center justify-center text-zinc-500 hover:text-white hover:bg-white/5 transition-all text-2xl font-black">+</button>
+                                </div>
+                                <button 
+                                    onClick={handleAddToCart}
+                                    className="flex-1 bg-gradient-to-r from-blue-700 to-blue-500 text-white font-black text-[11px] uppercase tracking-[0.3em] rounded-2xl hover:scale-105 hover:from-blue-600 hover:to-blue-400 transition-all shadow-[0_20px_40px_rgba(59,130,246,0.15)] active:scale-95 flex items-center justify-center gap-3 relative overflow-hidden group"
+                                >
+                                    <span className="relative z-10">Add To Interface</span>
+                                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </button>
                             </div>
-                            <div className="flex items-center gap-3 text-gray-600 bg-gray-50 p-4 rounded-2xl">
-                                <Truck className="text-pink-600" size={24} />
-                                <span className="text-sm font-semibold tracking-tight">Free Delivery</span>
-                            </div>
+                            <button className="w-full bg-white text-black font-black text-[11px] uppercase tracking-[0.3em] rounded-2xl h-16 hover:bg-blue-500 hover:text-white transition-all shadow-2xl active:scale-95 animate-float-slow">
+                                Checkout Workspace
+                            </button>
                         </div>
 
-                        {/* Action Area */}
-                        <div className="mt-auto flex flex-col sm:flex-row gap-4">
-                            <Button 
-                                onClick={handleAddToCart}
-                                className="flex-1 bg-pink-600 hover:bg-pink-700 text-white h-16 rounded-2xl text-lg font-bold shadow-lg shadow-pink-200 transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3"
-                            >
-                                <ShoppingCart size={22} />
-                                Add to Cart
-                            </Button>
+                        {/* Bullet Specs */}
+                        <div className="pt-10 space-y-6 border-t border-white/5">
+                            <h4 className="text-[11px] font-black text-zinc-500 uppercase tracking-[0.3em] ml-1">Technical Highlight</h4>
+                            <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {features.slice(0, 8).map((stat, i) => (
+                                    <li key={i} className="flex gap-4 text-xs text-zinc-400 font-bold group">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-blue-600 mt-1 shadow-[0_0_10px_rgba(59,130,246,0.8)] transition-all group-hover:scale-150" />
+                                        <span className="group-hover:text-white transition-colors uppercase tracking-tight leading-tight">{stat}</span>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
                     </div>
                 </div>

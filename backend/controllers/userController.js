@@ -30,11 +30,14 @@ export const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const role = email === "sithumkaveesha1212@gmail.com" ? "admin" : "user";
+    
     const newUser = await User.create({
       firstname,
       lastname,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      role
     });
 
     const token = jwt.sign(
@@ -235,6 +238,14 @@ export const login = async (req, res) => {
       { expiresIn: "30d" }
     )
     existingUser.isLoggedIn = true;
+    
+    // Dynamically enforce admin role for the specific email
+    if (existingUser.email === "sithumkaveesha1212@gmail.com") {
+        existingUser.role = "admin";
+    } else {
+        existingUser.role = "user";
+    }
+    
     await existingUser.save()
 const  existingSession = await Session.findOne({ userId: existingUser._id })
 if(existingSession){

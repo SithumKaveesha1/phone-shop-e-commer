@@ -32,47 +32,48 @@ const products = [
 
 const TheLatest = () => {
   return (
-    <section className="py-24 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-2xl md:text-3xl font-black text-black mb-12">
-            The latest. <span className="text-zinc-400">Take a look at what's new, right now.</span>
+    <section className="py-32 bg-white overflow-hidden relative">
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <h2 className="text-3xl md:text-5xl font-black text-zinc-900 mb-16 tracking-tighter">
+            The latest. Take a look at <span className="text-gradient-purple">what's new</span>, right now.
         </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {products.map((p) => (
-            <div key={p.id} className="group transition-all duration-700 hover:-translate-y-2">
-              <div className="bg-zinc-50 rounded-[2.5rem] p-10 h-[500px] flex flex-col items-center relative overflow-hidden transition-all group-hover:shadow-[0_40px_80px_rgba(0,0,0,0.06)]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          {products.map((p, idx) => (
+            <div key={p.id} className="group transition-all duration-700 hover:-translate-y-4" style={{ animationDelay: `${idx * 0.1}s` }}>
+              <div className="bg-[#f5f5f7] rounded-[48px] p-10 h-[560px] flex flex-col items-center relative overflow-hidden transition-all group-hover:shadow-[0_40px_100px_rgba(0,0,0,0.05)] border border-transparent group-hover:border-zinc-200">
+                
                 {/* Badge */}
                 {p.badge && (
-                    <span className="absolute top-8 left-8 bg-black text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">{p.badge}</span>
+                    <span className="absolute top-8 left-8 bg-blue-600 text-white text-[9px] font-black px-4 py-1.5 rounded-full uppercase tracking-[0.2em] z-20 shadow-lg shadow-blue-500/20">{p.badge}</span>
                 )}
 
                 {/* Main Product Image */}
-                <div className="relative z-10 w-full h-64 flex items-center justify-center mb-10 transition-transform duration-700 group-hover:scale-110">
-                    <img src={p.image} alt={p.name} className="max-h-full object-contain mix-blend-multiply" />
+                <div className="relative z-10 w-full h-72 flex items-center justify-center mb-10 transition-transform duration-700 group-hover:scale-110">
+                    <img src={p.image} alt={p.name} className="max-h-full object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.08)]" />
                 </div>
 
                 {/* Color Dots */}
-                <div className="flex gap-2 mb-6">
+                <div className="flex gap-2.5 mb-8 relative z-10 p-2 bg-white rounded-full border border-zinc-100 shadow-sm">
                     {p.colors.map((c, i) => (
-                        <div key={i} className="w-3 h-3 rounded-full border border-black/5" style={{ backgroundColor: c }} />
+                        <div key={i} className="w-3.5 h-3.5 rounded-full border border-zinc-100 shadow-inner" style={{ backgroundColor: c }} />
                     ))}
                 </div>
 
                 {/* Product Info */}
-                <div className="text-center">
-                    <h3 className="font-bold text-zinc-900 text-lg mb-2">{p.name}</h3>
-                    <p className="text-primary font-black text-base mb-1">{p.price}</p>
-                    <div className="flex items-center justify-center gap-2">
-                        <span className="text-[10px] font-bold text-zinc-400 uppercase">or</span>
-                        <span className="text-[10px] font-black text-zinc-900">{p.koko} with <span className="text-primary">KOKO</span></span>
+                <div className="text-center relative z-10">
+                    <h3 className="font-black text-zinc-900 text-xl mb-3 tracking-tight">{p.name}</h3>
+                    <p className="text-blue-600 font-black text-base mb-2 tracking-tight">{p.price}</p>
+                    <div className="flex items-center justify-center gap-2 bg-zinc-200/50 px-4 py-1.5 rounded-full">
+                        <span className="text-[9px] font-black text-zinc-500 uppercase tracking-widest">or</span>
+                        <span className="text-[10px] font-black text-zinc-600 tracking-tight">{p.koko} with <span className="text-blue-600">KOKO</span></span>
                     </div>
                 </div>
 
                 {/* Hover Action */}
-                <div className="absolute inset-x-0 bottom-0 p-8 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                    <Link to={`/products`} className="w-full bg-black text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2">
-                        View Details <ChevronRight size={14} />
+                <div className="absolute inset-x-0 bottom-0 p-8 translate-y-full group-hover:translate-y-0 transition-all duration-500 ease-out">
+                    <Link to={`/products`} className="w-full bg-zinc-900 hover:bg-black text-white py-5 rounded-3xl font-black text-[10px] uppercase tracking-[0.3em] flex items-center justify-center gap-3 shadow-2xl transition-all active:scale-95">
+                        View Details <ChevronRight size={16} strokeWidth={3} />
                     </Link>
                 </div>
               </div>

@@ -1,126 +1,116 @@
 import React from 'react';
-import { Search, Tag, Briefcase, IndianRupee, RotateCcw } from 'lucide-react';
+import { Search, SlidersHorizontal, PackageCheck, RotateCcw } from 'lucide-react';
 
 const FilterSidebar = ({ filters, setFilters, onReset }) => {
-  const categories = ['All', 'Mobile', 'Headphone', 'Laptop', 'TV'];
-  const brands = ['All', 'Apple', 'Samsung', 'Sony', 'Dell', 'HP', 'OnePlus', 'boAt'];
+  const categories = ['iPhone', 'Mac', 'iPad', 'Watch', 'AirPods', 'Accessories'];
+  
+  const colors = [
+    { name: 'Black', hex: '#1d1d1f', count: 6 },
+    { name: 'Blue', hex: '#637599', count: 4 },
+    { name: 'Pink', hex: '#d597a8', count: 4 },
+    { name: 'Silver', hex: '#e3e3e3', count: 2 },
+    { name: 'White', hex: '#f5f5f7', count: 5 },
+    { name: 'Black Titanium', hex: '#3c3c3d', count: 4 }
+  ];
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFilters((prev) => ({ 
+      ...prev, 
+      [name]: type === 'checkbox' ? checked : value 
+    }));
   };
 
   return (
-    <div className="w-full md:w-64 bg-white/70 backdrop-blur-xl p-6 rounded-[32px] shadow-xl shadow-gray-200/50 h-fit sticky top-24 border border-white/50 space-y-8 animate-in fade-in slide-in-from-left-4 duration-1000">
+    <div className="space-y-12 relative animate-in fade-in duration-700">
+      
       {/* Search Section */}
-      <div className="space-y-3 px-1">
-        <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
-          <Search size={12} className="text-pink-600" />
-          Find Product
-        </label>
+      <div className="space-y-6">
+        <h3 className="text-[11px] font-black text-zinc-900 uppercase tracking-[0.2em] flex items-center gap-3">
+          <Search size={14} className="text-blue-600" />
+          Find Device
+        </h3>
         <div className="relative group">
           <input
             type="text"
             name="search"
             value={filters.search}
             onChange={handleChange}
-            placeholder="Type keywords..."
-            className="w-full h-11 pl-4 pr-10 bg-gray-50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-4 focus:ring-pink-500/10 focus:border-pink-500 transition-all text-sm font-medium outline-none placeholder:text-gray-300"
+            placeholder="e.g. iPhone 16 Pro"
+            className="w-full h-14 pl-6 pr-14 bg-white rounded-2xl border border-zinc-200 text-zinc-900 focus:ring-4 focus:ring-blue-600/10 focus:border-blue-500 transition-all text-xs font-bold outline-none placeholder:text-zinc-400 shadow-sm"
           />
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 group-hover:text-pink-500 transition-colors pointer-events-none">
-            <Search size={16} />
+          <div className="absolute right-6 top-1/2 -translate-y-1/2 text-zinc-300 group-focus-within:text-blue-600 transition-colors">
+            <Search size={20} />
           </div>
         </div>
       </div>
 
-      {/* Category Section */}
-      <div className="px-1">
-        <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2 mb-4">
-          <Tag size={12} className="text-pink-600" />
-          Collections
-        </label>
-        <div className="space-y-2">
-          {categories.map((cat) => (
-            <label key={cat} className="flex items-center group cursor-pointer">
+      {/* Stock Status */}
+      <div className="space-y-6">
+        <h3 className="text-[11px] font-black text-zinc-900 uppercase tracking-[0.2em] px-1">Availability</h3>
+        <div className="space-y-5">
+          {['On sale', 'In stock'].map((status) => (
+            <label key={status} className="flex items-center gap-4 group cursor-pointer relative">
               <div className="relative flex items-center justify-center">
                 <input
-                  type="radio"
-                  name="category"
-                  value={cat}
-                  checked={filters.category === cat}
-                  onChange={handleChange}
-                  className="peer appearance-none w-5 h-5 border-2 border-gray-100 rounded-full checked:border-pink-500 transition-all cursor-pointer"
+                  type="checkbox"
+                  className="peer appearance-none w-6 h-6 border border-zinc-200 rounded-lg bg-white checked:bg-blue-600 checked:border-blue-600 transition-all cursor-pointer shadow-sm"
                 />
-                <div className="absolute w-2.5 h-2.5 bg-pink-500 rounded-full scale-0 peer-checked:scale-100 transition-transform duration-300" />
+                <PackageCheck size={14} className="absolute text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" />
               </div>
-              <span className={`ml-3 text-sm transition-all duration-300 ${filters.category === cat ? 'text-gray-900 font-bold' : 'text-gray-500 font-medium group-hover:text-pink-500'}`}>
-                {cat}
-              </span>
+              <span className="text-[11px] font-black uppercase tracking-widest text-zinc-500 group-hover:text-zinc-900 transition-all">{status}</span>
             </label>
           ))}
         </div>
       </div>
 
-      {/* Brand Section */}
-      <div className="px-1">
-        <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2 mb-3">
-          <Briefcase size={12} className="text-pink-600" />
-          Brand Lineup
-        </label>
-        <select
-          name="brand"
-          value={filters.brand}
-          onChange={handleChange}
-          className="w-full h-11 px-4 bg-gray-50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-4 focus:ring-pink-500/10 focus:border-pink-500 outline-none transition-all text-sm font-bold text-gray-700 appearance-none cursor-pointer"
-        >
-          {brands.map((b) => (
-            <option key={b} value={b}>{b}</option>
-          ))}
-        </select>
-      </div>
-
-      {/* Price Scaling Section */}
-      <div className="px-1">
-        <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2 mb-4">
-          <IndianRupee size={12} className="text-pink-600" />
-          Budget Range
-        </label>
-        <div className="space-y-5">
-          <div className="flex items-center gap-3">
-            <div className="flex-1 bg-gray-50 p-2 rounded-xl border border-gray-100 text-center">
-              <p className="text-[9px] font-black text-gray-300 uppercase leading-none mb-1">Min</p>
-              <p className="text-xs font-bold text-gray-800 leading-none">{filters.minPrice.toLocaleString()}</p>
+      {/* Price Section */}
+      <div className="space-y-8">
+        <h3 className="text-[11px] font-black text-zinc-900 uppercase tracking-[0.2em] px-1">Budget</h3>
+        <div className="space-y-8">
+          <div className="relative px-2">
+            <div className="h-1.5 bg-zinc-200 rounded-full w-full relative overflow-hidden">
+                <div className="absolute h-full bg-blue-600 rounded-full " style={{ width: '80%' }}></div>
             </div>
-            <div className="w-2 h-[2px] bg-gray-100" />
-            <div className="flex-1 bg-gray-50 p-2 rounded-xl border border-gray-100 text-center">
-              <p className="text-[9px] font-black text-gray-300 uppercase leading-none mb-1">Max</p>
-              <p className="text-xs font-bold text-gray-800 leading-none">{filters.maxPrice.toLocaleString()}</p>
-            </div>
+            <div className="absolute top-1/2 -translate-y-1/2 left-0 w-5 h-5 bg-white border border-zinc-200 rounded-full cursor-pointer hover:scale-125 transition-transform shadow-md z-10"></div>
+            <div className="absolute top-1/2 -translate-y-1/2 left-[80%] w-5 h-5 bg-white border border-zinc-200 rounded-full cursor-pointer hover:scale-125 transition-transform shadow-md z-10"></div>
           </div>
-          
-          <div className="relative pt-1">
-            <input
-              type="range"
-              name="maxPrice"
-              min="0"
-              max="2000000"
-              step="50000"
-              value={filters.maxPrice}
-              onChange={handleChange}
-              className="w-full h-1.5 bg-gray-100 rounded-full appearance-none cursor-pointer accent-pink-600 outline-none hover:bg-gray-200 transition-colors"
-            />
+          <div className="flex flex-col gap-4">
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">
+                Range: <span className="text-zinc-900 font-black">LKR {filters.minPrice.toLocaleString()} — {filters.maxPrice.toLocaleString()}</span>
+              </p>
+              <button className="h-12 bg-white border border-zinc-200 text-zinc-900 font-black text-[10px] uppercase tracking-[0.3em] rounded-xl hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all shadow-sm active:scale-95">Filter Budget</button>
           </div>
         </div>
       </div>
 
+      {/* Color Section */}
+      <div className="space-y-6">
+        <h3 className="text-[11px] font-black text-zinc-900 uppercase tracking-[0.2em] px-1">Aesthetics</h3>
+        <div className="grid grid-cols-1 gap-4">
+          {colors.map((color) => (
+            <div key={color.name} className="flex items-center justify-between group cursor-pointer p-4 rounded-2xl hover:bg-white transition-all border border-transparent hover:border-zinc-100 hover:shadow-sm">
+              <div className="flex items-center gap-4">
+                <div 
+                  className="w-5 h-5 rounded-full border border-zinc-200 shadow-sm transition-transform group-hover:scale-110" 
+                  style={{ backgroundColor: color.hex }}
+                />
+                <span className="text-[11px] font-black uppercase tracking-widest text-zinc-500 group-hover:text-zinc-900 transition-colors">{color.name}</span>
+              </div>
+              <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest bg-blue-50 px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-all">{color.count}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Reset Section */}
-      <div className="pt-4 pointer-events-none">
+      <div className="pt-8 border-t border-zinc-100">
         <button
           onClick={onReset}
-          className="pointer-events-auto w-full h-12 bg-pink-50 text-pink-600 font-black text-[11px] uppercase tracking-widest rounded-2xl hover:bg-pink-600 hover:text-white transition-all shadow-sm active:scale-[0.98] group flex items-center justify-center gap-2"
+          className="w-full h-14 bg-zinc-50 text-zinc-500 font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl hover:text-white hover:bg-zinc-900 group transition-all flex items-center justify-center gap-4 border border-zinc-100 active:scale-95 shadow-sm"
         >
-          <RotateCcw size={14} className="group-hover:-rotate-45 transition-transform" />
-          Clear Workspace
+          <RotateCcw size={16} className="group-hover:-rotate-90 transition-transform duration-700 text-blue-600 group-hover:text-white" />
+          Reset Filters
         </button>
       </div>
     </div>
@@ -128,4 +118,3 @@ const FilterSidebar = ({ filters, setFilters, onReset }) => {
 };
 
 export default FilterSidebar;
-

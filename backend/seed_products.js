@@ -4,14 +4,43 @@ import { Product } from "./models/productModel.js";
 
 dotenv.config();
 
-const MONGO_URI = "mongodb+srv://sithu:Sithum%401@cluster0.e7swrai.mongodb.net/Ekart-YT?retryWrites=true&w=majority";
+const MONGO_URI = "mongodb+srv://sithumkaveesha1212_db_user:Sithum%401@cluster0.e7swrai.mongodb.net/Ekart-YT?retryWrites=true&w=majority";
 
 const products = [
   // iPhones
-  { name: "iPhone 16 Pro Max", description: "Titanium, A18 Pro, 5x Telephoto", price: 409990, category: "iPhone", brand: "Apple", image: "https://specials-images.forbesimg.com/imageserve/66e076729528646f8ed882f0/Apple-iPhone-16-Pro-Max/960x0.jpg?format=jpg&width=960", images: [{url: "...", publicId: "..."}] },
+  { 
+    name: "iPhone 16 Pro Max", 
+    description: "Titanium, A18 Pro, 5x Telephoto", 
+    price: 409990, 
+    category: "iPhone", 
+    brand: "Apple", 
+    image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-model-unselect-gallery-1-202409?wid=5120&hei=2880&fmt=p-jpg&qlt=95&.v=1723146433543", 
+    colors: ["#D1BBB0", "#BEBEBE", "#F2F2F2", "#3C3C3D"],
+    images: [
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-model-unselect-gallery-1-202409?wid=5120&hei=2880&fmt=p-jpg&qlt=95&.v=1723146433543", publicId: "desert" },
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-model-unselect-gallery-2-202409?wid=5120&hei=2880&fmt=p-jpg&qlt=95&.v=1723146433543", publicId: "natural" },
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-model-unselect-gallery-5-202409?wid=5120&hei=2880&fmt=p-jpg&qlt=95&.v=1723146433543", publicId: "white" },
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-model-unselect-gallery-6-202409?wid=5120&hei=2880&fmt=p-jpg&qlt=95&.v=1723146433543", publicId: "black" }
+    ] 
+  },
   { name: "iPhone 16 Pro", description: "Pro cameras, Pro performance", price: 349990, category: "iPhone", brand: "Apple", image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-select-202409?wid=5120&hei=2880&fmt=p-jpg&qlt=95&.v=1723146433543", images: [{url: "...", publicId: "..."}] },
   { name: "iPhone 16 Plus", description: "Bigger screen, better battery", price: 284900, category: "iPhone", brand: "Apple", image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-7inch?wid=2560&hei=1440&fmt=p-jpg&qlt=95&.v=1692923777972", images: [{url: "...", publicId: "..."}] },
-  { name: "iPhone 16", description: "Everything you need and more", price: 239990, category: "iPhone", brand: "Apple", image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-select-202409?wid=5120&hei=2880&fmt=p-jpg&qlt=95&.v=1723146433543", images: [{url: "...", publicId: "..."}] },
+  { 
+    name: "iPhone 16", 
+    description: "Everything you need and more", 
+    price: 239990, 
+    category: "iPhone", 
+    brand: "Apple", 
+    image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-ultramarine?wid=5120&hei=2880&fmt=p-jpg&qlt=95&.v=1724688741366", 
+    colors: ["#637599", "#78948F", "#D597A8", "#F2F2F2", "#3C3C3D"],
+    images: [
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-ultramarine?wid=5120&hei=2880&fmt=p-jpg&qlt=95&.v=1724688741366", publicId: "ultramarine" },
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-teal?wid=5120&hei=2880&fmt=p-jpg&qlt=95&.v=1724688742878", publicId: "teal" },
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-pink?wid=5120&hei=2880&fmt=p-jpg&qlt=95&.v=1724688740510", publicId: "pink" },
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-white?wid=5120&hei=2880&fmt=p-jpg&qlt=95&.v=1724688740130", publicId: "white" },
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-black?wid=5120&hei=2880&fmt=p-jpg&qlt=95&.v=1724688741334", publicId: "black" }
+    ] 
+  },
   { name: "iPhone 15 Pro Max", description: "A17 Pro Titanium beauty", price: 374990, category: "iPhone", brand: "Apple", image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-7inch-blacktitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=95&.v=1692846357018", images: [{url: "...", publicId: "..."}] },
   { name: "iPhone 15", description: "Dynamic Island, 48MP Camera", price: 245000, category: "iPhone", brand: "Apple", image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-blue?wid=2560&hei=1440&fmt=p-jpg&qlt=95&.v=1692923777972", images: [{url: "...", publicId: "..."}] },
   { name: "iPhone 14", description: "Still a classic powerhouse", price: 184990, category: "iPhone", brand: "Apple", image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-finish-select-202209-6-1inch-blue?wid=2560&hei=1440&fmt=p-jpg&qlt=95&.v=1661026582305", images: [{url: "...", publicId: "..."}] },
@@ -19,9 +48,35 @@ const products = [
 
   // Macs
   { name: "MacBook Pro 16 M3 Max", description: "Unstoppable performance", price: 1249990, category: "Mac", brand: "Apple", image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/macbook-pro-16-select-m3-max-spaceblack-202310?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1697311054290", images: [{url: "...", publicId: "..."}] },
-  { name: "MacBook Air 15 M3", description: "Bigger canvas, super thin", price: 485000, category: "Mac", brand: "Apple", image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/macbook-air-15-midnight-select-202403?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1707421484210", images: [{url: "...", publicId: "..."}] },
-  { name: "MacBook Air 13 M2", description: "The ultra-portable champ", price: 345000, category: "Mac", brand: "Apple", image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/macbook-air-midnight-select-202206?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1653084303665", images: [{url: "...", publicId: "..."}] },
-  { name: "iMac 24-inch M3", description: "Colorful, powerful, all-in-one", price: 565000, category: "Mac", brand: "Apple", image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-blue-selection-hero-202310?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1697305788972", images: [{url: "...", publicId: "..."}] },
+  { 
+    name: "MacBook Pro 14 M3", 
+    description: "Built for creators", 
+    price: 549000, 
+    category: "Mac", 
+    brand: "Apple", 
+    image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mbp14-spaceblack-select-202310?wid=904&hei=840&fmt=p-jpg&qlt=95&.v=1697311054290",
+    colors: ["#2E2E2E", "#E3E3E3"], // Space Black, Silver
+    images: [
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mbp14-spaceblack-select-202310?wid=904&hei=840&fmt=p-jpg&qlt=95&.v=1697311054290", publicId: "spaceblack" },
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mbp14-silver-select-202310?wid=904&hei=840&fmt=p-jpg&qlt=95&.v=1697311054320", publicId: "silver" }
+    ]
+  },
+  { 
+    name: "MacBook Air 13 M3", 
+    description: "Thinner, lighter, faster", 
+    price: 369000, 
+    category: "Mac", 
+    brand: "Apple", 
+    image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-midnight-select-202402?wid=904&hei=840&fmt=p-jpg&qlt=95&.v=1708364044110",
+    colors: ["#2E3641", "#F2E4CE", "#545456", "#E3E3E3"], // Midnight, Starlight, Space Gray, Silver
+    images: [
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-midnight-select-202402?wid=904&hei=840&fmt=p-jpg&qlt=95&.v=1708364044110", publicId: "midnight" },
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-starlight-select-202402?wid=904&hei=840&fmt=p-jpg&qlt=95&.v=1708364044110", publicId: "starlight" },
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-spacegray-select-202402?wid=904&hei=840&fmt=p-jpg&qlt=95&.v=1708364044110", publicId: "spacegray" },
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-silver-select-202402?wid=904&hei=840&fmt=p-jpg&qlt=95&.v=1708364044110", publicId: "silver" }
+    ]
+  },
+  { name: "iMac 24 M3", description: "Colorful, powerful, all-in-one", price: 429000, category: "Mac", brand: "Apple", image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-blue-selection-hero-202310?wid=904&hei=840&fmt=p-jpg&qlt=95&.v=1697305316985", images: [{url: "...", publicId: "..."}] },
   { name: "Mac Mini M2", description: "Tiny footprint, giant performance", price: 215000, category: "Mac", brand: "Apple", image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mac-mini-hero-202301?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1670038220710", images: [{url: "...", publicId: "..."}] },
 
   // iPads
@@ -35,7 +90,71 @@ const products = [
 
   // AirPods & Others
   { name: "AirPods Pro 2", description: "Magic audio", price: 74900, category: "AirPods", brand: "Apple", image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MTJV3?wid=1144&hei=1144&fmt=jpeg&qlt=95&.v=1694014871985", images: [{url: "...", publicId: "..."}] },
-  { name: "AirPods Max", description: "Studio sound reinvented", price: 184900, category: "AirPods", brand: "Apple", image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-max-select-202409-midnight?wid=940&hei=1112&fmt=p-jpg&qlt=95&.v=1724927449514", images: [{url: "...", publicId: "..."}] }
+  { 
+    name: "AirPods Max", 
+    description: "Studio sound reinvented", 
+    price: 184900, 
+    category: "AirPods", 
+    brand: "Apple", 
+    image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-max-select-202409-midnight?wid=940&hei=1112&fmt=p-jpg&qlt=95&.v=1724927449514",
+    colors: ["#3C3C3D", "#E3DECC", "#637599", "#786E83", "#E9A083"], // Midnight, Starlight, Blue, Purple, Orange
+    images: [
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-max-select-202409-midnight?wid=940&hei=1112&fmt=p-jpg&qlt=95&.v=1724927449514", publicId: "midnight" },
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-max-select-202409-starlight?wid=940&hei=1112&fmt=p-jpg&qlt=95&.v=1724927448259", publicId: "starlight" },
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-max-select-202409-blue?wid=940&hei=1112&fmt=p-jpg&qlt=95&.v=1724927448373", publicId: "blue" },
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-max-select-202409-purple?wid=940&hei=1112&fmt=p-jpg&qlt=95&.v=1724927448550", publicId: "purple" },
+      { url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-max-select-202409-orange?wid=940&hei=1112&fmt=p-jpg&qlt=95&.v=1724927448726", publicId: "orange" }
+    ]
+  },
+
+  // Accessories
+  { 
+    name: "iPhone 16 Pro MagSafe Silicone Case", 
+    description: "Midnight, Silky-soft finish, MagSafe", 
+    price: 18900, 
+    category: "Accessories", 
+    brand: "Apple", 
+    image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MYT73?wid=1144&hei=1144&fmt=jpeg&qlt=95&.v=1723835694119", 
+    colors: ["#3C3C3D", "#637599", "#78948F"], // Midnight, Ultramarine, Teal
+    images: [{url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MYT73?wid=1144&hei=1144&fmt=jpeg&qlt=95&.v=1723835694119", publicId: "midnight"}] 
+  },
+  { 
+    name: "MagSafe Charger", 
+    description: "Fast wireless charging up to 15W", 
+    price: 14900, 
+    category: "Accessories", 
+    brand: "Apple", 
+    image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MHXH3?wid=1144&hei=1144&fmt=jpeg&qlt=95&.v=1600366914000", 
+    images: [{url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MHXH3?wid=1144&hei=1144&fmt=jpeg&qlt=95&.v=1600366914000", publicId: "magsafe"}] 
+  },
+  { 
+    name: "20W USB-C Power Adapter", 
+    description: "Fast, efficient charging", 
+    price: 9500, 
+    category: "Accessories", 
+    brand: "Apple", 
+    image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MU7W2?wid=1144&hei=1144&fmt=jpeg&qlt=95&.v=1537233802052", 
+    images: [{url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MU7W2?wid=1144&hei=1144&fmt=jpeg&qlt=95&.v=1537233802052", publicId: "adapter"}] 
+  },
+  { 
+    name: "AirTag (4 Pack)", 
+    description: "Lose your knack for losing things", 
+    price: 36900, 
+    category: "Accessories", 
+    brand: "Apple", 
+    image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MX542?wid=1144&hei=1144&fmt=jpeg&qlt=95&.v=1617761671000", 
+    images: [{url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MX542?wid=1144&hei=1144&fmt=jpeg&qlt=95&.v=1617761671000", publicId: "airtag"}] 
+  },
+  { 
+    name: "FineWoven Wallet with MagSafe", 
+    description: "Midnight, Supports Find My", 
+    price: 21900, 
+    category: "Accessories", 
+    brand: "Apple", 
+    image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MT243?wid=1144&hei=1144&fmt=jpeg&qlt=95&.v=1693003923308", 
+    colors: ["#3C3C3D", "#4C3E3A", "#535C4E"], // Midnight, Mulberry, Evergreen
+    images: [{url: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MT243?wid=1144&hei=1144&fmt=jpeg&qlt=95&.v=1693003923308", publicId: "wallet"}] 
+  }
 ];
 
 const seedDB = async () => {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
-import { Package, DollarSign, Image as ImageIcon, Tag, Briefcase, Plus, ArrowLeft, Info, Loader2, Upload, Rocket } from 'lucide-react';
+import { Package, DollarSign, Image as ImageIcon, Tag, Briefcase, Plus, ArrowLeft, Info, Loader2, Upload, Rocket, ShieldCheck, Cpu } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
@@ -14,7 +14,7 @@ const AddProduct = () => {
         name: '',
         description: '',
         price: '',
-        category: 'Mobile',
+        category: 'iPhone',
         brand: ''
     });
     const [imageFiles, setImageFiles] = useState([]);
@@ -22,10 +22,9 @@ const AddProduct = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    // Redirect non-admin users
     useEffect(() => {
         if (user !== undefined && user?.role !== 'admin') {
-            toast.error('Access denied. Admin only.');
+            toast.error('Access restricted to central administrative nodes.');
             navigate('/');
         }
     }, [user, navigate]);
@@ -38,7 +37,7 @@ const AddProduct = () => {
     const handleFileChange = (e) => {
         const chosenFiles = Array.from(e.target.files);
         if (imageFiles.length + chosenFiles.length > 5) {
-            toast.warning("Maximum 5 images allowed per product");
+            toast.warning("Buffer overflow: Maximum 5 assets allowed per unit.");
             return;
         }
 
@@ -60,7 +59,7 @@ const AddProduct = () => {
         e.preventDefault();
         
         if (imageFiles.length === 0) {
-            toast.warning("Please upload at least one product image!");
+            toast.warning("Hardware visual required for deployment.");
             return;
         }
 
@@ -73,176 +72,186 @@ const AddProduct = () => {
         data.append('category', formData.category);
         data.append('brand', formData.brand);
         
-        // Append all images to the 'images' field
         imageFiles.forEach(file => {
             data.append('images', file);
         });
 
-        console.log('[DEBUG-FRONTEND] Submitting to: http://localhost:8005/api/products');
-        for (let [key, value] of data.entries()) {
-            console.log(`[DATA] ${key}:`, value);
-        }
-
         try {
             const res = await createProduct(data);
-
             if (res.success) {
-                toast.success("Product launched successfully!");
+                toast.success("Hardware protocol synchronized. Unit deployed.");
                 navigate('/products');
             }
         } catch (error) {
             console.error(error);
-            toast.error(error.message || "Failed to add product");
+            toast.error(error.message || "Deployment failure.");
         } finally {
             setLoading(false);
         }
     };
 
-
     return (
-        <div className="pt-28 pb-20 min-h-screen bg-gray-50/50">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="pt-28 pb-32 min-h-screen bg-black relative overflow-hidden">
+             {/* Background Glows */}
+             <div className="mesh-glow bg-blue-600/10 w-[800px] h-[800px] absolute -top-40 -left-60 opacity-30 blur-[180px] animate-pulse" />
+             <div className="mesh-glow bg-purple-600/10 w-[600px] h-[600px] absolute bottom-0 right-0 opacity-20 blur-[150px]" />
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
                 
                 {/* Header */}
-                <div className="flex items-center justify-between mb-8">
-                    <div className="space-y-1">
+                <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-8">
+                    <div className="space-y-4">
                         <button 
                             onClick={() => navigate(-1)}
-                            className="flex items-center gap-2 text-gray-500 hover:text-pink-600 font-bold text-sm transition-colors mb-2 group"
+                            className="flex items-center gap-3 text-zinc-600 hover:text-white font-black text-[10px] transition-all mb-4 group uppercase tracking-[0.3em]"
                         >
                             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-                            Back to Inventory
+                            Return to Inventory Grid
                         </button>
-                        <h1 className="text-4xl font-black text-gray-900 tracking-tight">Launch <span className="text-pink-600">Product</span></h1>
-                        <p className="text-gray-500 text-sm font-medium">Add a new item to your global digital storefront</p>
+                        <h1 className="text-5xl md:text-6xl font-black text-white tracking-tighter uppercase leading-none italic">Deploy <span className="text-gradient-blue">Hardware</span></h1>
+                        <p className="text-zinc-600 text-[11px] font-black uppercase tracking-[0.2em] mt-1">Initialize new unit protocols for the global market</p>
                     </div>
-                    <div className="hidden sm:flex w-16 h-16 bg-pink-600 rounded-3xl items-center justify-center text-white shadow-xl shadow-pink-200/50">
-                        <Rocket size={32} strokeWidth={2.5} />
+                    
+                    <div className="hidden lg:flex w-24 h-24 glass-card rounded-[40px] items-center justify-center text-blue-500 border border-white/5 shadow-2xl relative group">
+                        <div className="absolute inset-0 bg-blue-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <Rocket size={40} strokeWidth={1.5} className="group-hover:rotate-12 transition-transform duration-700" />
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
                     {/* Main Form Section */}
                     <div className="lg:col-span-8">
-                        <div className="bg-white rounded-[40px] border border-gray-100 shadow-2xl shadow-gray-200/50 overflow-hidden">
-                            <form onSubmit={handleSubmit} className="p-8 md:p-10 space-y-10">
+                        <div className="glass-card rounded-[48px] border border-white/5 shadow-2xl overflow-hidden relative group">
+                            <div className="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            
+                            <form onSubmit={handleSubmit} className="p-10 md:p-14 space-y-12 relative z-10">
                                 
                                 {/* Basic Info */}
-                                <div className="space-y-8">
-                                    <div className="flex items-center justify-between pb-4 border-b border-gray-50">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 bg-pink-50 rounded-xl flex items-center justify-center text-pink-600">
-                                                <Info size={20} />
+                                <div className="space-y-10">
+                                    <div className="flex items-center justify-between pb-8 border-b border-white/5">
+                                        <div className="flex items-center gap-5">
+                                            <div className="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-500 border border-blue-500/10 shadow-inner">
+                                                <Cpu size={24} />
                                             </div>
-                                            <h3 className="text-lg font-black text-gray-800 tracking-tight">Essential Details</h3>
+                                            <div>
+                                                <h3 className="text-2xl font-black text-white uppercase tracking-tighter italic">Unit DNA</h3>
+                                                <p className="text-zinc-600 text-[10px] font-black uppercase tracking-[0.2em] mt-1">Core architectural identification</p>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-1 gap-8">
+                                    <div className="grid grid-cols-1 gap-10">
                                         <div className="space-y-3">
-                                            <Label htmlFor="name" className="text-sm font-black text-gray-700 uppercase tracking-wider flex items-center gap-2 px-1">
-                                                Product Title
+                                            <Label htmlFor="name" className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-2">
+                                                Hardware Model Title
                                             </Label>
                                             <Input 
                                                 id="name"
-                                                placeholder="e.g. iPhone 15 Pro Max"
+                                                placeholder="e.g. iPhone 16 Pro Max - White Titanium"
                                                 value={formData.name}
                                                 onChange={handleChange}
                                                 required
-                                                className="h-14 rounded-2xl border-gray-100 bg-gray-50/30 focus:bg-white focus:ring-pink-500 focus:border-pink-500 transition-all text-base placeholder:text-gray-300 font-medium"
+                                                className="h-16 rounded-[24px] border-white/5 bg-white/5 text-white focus:border-blue-500/50 transition-all text-base placeholder:text-zinc-800 font-black"
                                             />
                                         </div>
 
                                         <div className="space-y-3">
-                                            <Label htmlFor="description" className="text-sm font-black text-gray-700 uppercase tracking-wider px-1">
-                                                Description
+                                            <Label htmlFor="description" className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-2">
+                                                Product Datasheet Reference
                                             </Label>
                                             <textarea 
                                                 id="description"
-                                                placeholder="Craft a compelling story for this product..."
+                                                placeholder="Specify GPU clusters, neural engine performance, and thermal management capabilities..."
                                                 value={formData.description}
                                                 onChange={handleChange}
-                                                className="w-full min-h-[160px] p-5 rounded-2xl border border-gray-100 bg-gray-50/30 focus:bg-white focus:ring-4 focus:ring-pink-500/10 focus:border-pink-500 outline-none transition-all text-base text-gray-700 placeholder:text-gray-300 font-medium leading-relaxed"
+                                                className="w-full min-h-[220px] p-8 rounded-[32px] border border-white/5 bg-white/5 text-white focus:border-blue-500/50 outline-none transition-all text-base placeholder:text-zinc-800 font-black leading-relaxed"
                                             />
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                                         <div className="space-y-3">
-                                            <Label htmlFor="price" className="text-sm font-black text-gray-700 uppercase tracking-wider flex items-center gap-2 px-1">
-                                                Price (LKR)
+                                            <Label htmlFor="price" className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-2">
+                                                Market Value (LKR)
                                             </Label>
                                             <div className="relative">
-                                                <div className="absolute left-5 top-1/2 -translate-y-1/2 text-pink-500 font-black">LKR</div>
+                                                <div className="absolute left-6 top-1/2 -translate-y-1/2 text-blue-600 font-black text-xs uppercase tracking-widest">LKR</div>
                                                 <Input 
                                                     id="price"
                                                     type="number"
-                                                    placeholder="0.00"
+                                                    placeholder="450,000"
                                                     value={formData.price}
                                                     onChange={handleChange}
                                                     required
-                                                    className="h-14 pl-16 rounded-2xl border-gray-100 bg-gray-50/30 focus:bg-white transition-all text-base font-bold"
+                                                    className="h-16 pl-20 rounded-[24px] border-white/5 bg-white/5 text-white focus:border-blue-500/50 transition-all text-lg font-black"
                                                 />
                                             </div>
                                         </div>
 
                                         <div className="space-y-3">
-                                            <Label htmlFor="brand" className="text-sm font-black text-gray-700 uppercase tracking-wider flex items-center gap-2 px-1">
-                                                Brand Label
+                                            <Label htmlFor="brand" className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-2">
+                                                Manufacturing Node (Brand)
                                             </Label>
                                             <Input 
                                                 id="brand"
-                                                placeholder="e.g. Apple, Samsung"
+                                                placeholder="e.g. Apple Inc."
                                                 value={formData.brand}
                                                 onChange={handleChange}
                                                 required
-                                                className="h-14 rounded-2xl border-gray-100 bg-gray-50/30 focus:bg-white transition-all text-base font-bold"
+                                                className="h-16 rounded-[24px] border-white/5 bg-white/5 text-white focus:border-blue-500/50 transition-all font-black"
                                             />
                                         </div>
                                     </div>
 
                                     <div className="space-y-3">
-                                        <Label htmlFor="category" className="text-sm font-black text-gray-700 uppercase tracking-wider px-1">Product Category</Label>
-                                        <select 
-                                            id="category"
-                                            value={formData.category}
-                                            onChange={handleChange}
-                                            className="w-full h-14 px-5 rounded-2xl border border-gray-100 bg-gray-50/30 focus:bg-white focus:ring-4 focus:ring-pink-500/10 focus:border-pink-500 outline-none transition-all text-base font-bold text-gray-700 appearance-none cursor-pointer"
-                                        >
-                                            <option value="Mobile">Mobile</option>
-                                            <option value="Headphone">Headphone</option>
-                                            <option value="Laptop">Laptop</option>
-                                            <option value="TV">TV</option>
-                                        </select>
+                                        <Label htmlFor="category" className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-2">Unit Category Allocation</Label>
+                                        <div className="relative">
+                                            <select 
+                                                id="category"
+                                                value={formData.category}
+                                                onChange={handleChange}
+                                                className="w-full h-16 px-8 rounded-[24px] border border-white/5 bg-white/5 text-white focus:border-blue-500/50 outline-none transition-all text-base font-black appearance-none cursor-pointer uppercase tracking-widest"
+                                            >
+                                                <option value="iPhone" className="bg-zinc-900">iPhone</option>
+                                                <option value="Mac" className="bg-zinc-900">Mac</option>
+                                                <option value="iPad" className="bg-zinc-900">iPad</option>
+                                                <option value="Watch" className="bg-zinc-900">Watch</option>
+                                                <option value="AirPods" className="bg-zinc-900">AirPods</option>
+                                                <option value="Accessories" className="bg-zinc-900">Accessories</option>
+                                            </select>
+                                            <div className="absolute right-8 top-1/2 -translate-y-1/2 pointer-events-none text-blue-500">
+                                                <Tag size={18} />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 {/* Form Actions */}
-                                <div className="pt-6 flex flex-col sm:flex-row gap-4">
+                                <div className="pt-10 flex flex-col sm:flex-row gap-6">
                                     <Button 
                                         type="submit" 
                                         disabled={loading}
-                                        className="flex-1 h-16 bg-pink-600 hover:bg-pink-700 text-white rounded-2xl text-lg font-black shadow-2xl shadow-pink-200/50 transition-all active:scale-[0.98] disabled:opacity-70 disabled:active:scale-100"
+                                        className="flex-1 h-20 bg-gradient-to-r from-blue-700 to-blue-500 hover:from-blue-600 hover:to-blue-400 text-white rounded-[28px] text-xl font-black shadow-[0_20px_40px_rgba(37,99,235,0.2)] transition-all active:scale-[0.98] disabled:opacity-70 uppercase tracking-widest text-xs"
                                     >
                                         {loading ? (
-                                            <span className="flex items-center gap-3">
-                                                <Loader2 className="animate-spin" size={24} />
-                                                Launching...
+                                            <span className="flex items-center gap-4">
+                                                <Loader2 className="animate-spin" size={26} />
+                                                Synchronizing...
                                             </span>
                                         ) : (
-                                            <span className="flex items-center gap-3 font-black">
-                                                <Plus size={24} />
-                                                Add Product
+                                            <span className="flex items-center gap-4">
+                                                <Plus size={26} strokeWidth={3} />
+                                                Deploy Hub Product
                                             </span>
                                         )}
                                     </Button>
                                     <Button 
                                         type="button"
-                                        variant="outline"
+                                        variant="ghost"
                                         onClick={() => navigate(-1)}
-                                        className="h-16 px-10 border-2 border-gray-100 text-gray-400 hover:text-gray-900 hover:bg-gray-50 hover:border-gray-200 rounded-2xl font-black transition-all"
+                                        className="h-20 px-12 text-zinc-600 hover:text-white transition-all font-black uppercase tracking-widest text-xs italic"
                                     >
-                                        Cancel
+                                        Abort Protocol
                                     </Button>
                                 </div>
                             </form>
@@ -250,26 +259,38 @@ const AddProduct = () => {
                     </div>
 
                     {/* Image Upload Sidebar */}
-                    <div className="lg:col-span-4 space-y-8">
-                        <div className="bg-white p-8 rounded-[40px] border border-gray-100 shadow-xl shadow-gray-200/30">
-                            <Label className="text-sm font-black text-gray-700 uppercase tracking-widest block mb-6 px-1 flex items-center gap-2">
-                                <Upload size={16} className="text-pink-600" />
-                                Product Images ({previewUrls.length}/5)
+                    <div className="lg:col-span-4 space-y-10">
+                        <div className="glass-card p-10 rounded-[48px] border border-white/5 shadow-2xl relative overflow-hidden group/sidebar">
+                            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-600 to-purple-600" />
+                            
+                            <Label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] block mb-10 px-1 flex items-center gap-4">
+                                <Upload size={18} className="text-blue-500 animate-pulse" />
+                                Visual Assets ({previewUrls.length}/5)
                             </Label>
                             
-                            <div className="space-y-4">
+                            <div className="space-y-8">
                                 {/* Main Highlight Preview */}
-                                <div className="relative group overflow-hidden rounded-[32px] border-2 border-dashed border-gray-100 bg-gray-50/30 hover:bg-white hover:border-pink-200 transition-all duration-500 flex flex-col items-center justify-center aspect-square">
+                                <div className="relative group overflow-hidden rounded-[32px] border-2 border-dashed border-white/5 bg-white/5 hover:border-blue-500/40 transition-all duration-700 flex flex-col items-center justify-center aspect-square shadow-inner">
                                     {previewUrls.length > 0 ? (
-                                        <img 
-                                            src={previewUrls[0]} 
-                                            alt="Primary Preview" 
-                                            className="w-full h-full object-contain rounded-2xl mix-blend-multiply p-4"
-                                        />
+                                        <div className="relative w-full h-full p-8 animate-in zoom-in-95 duration-1000">
+                                            <img 
+                                                src={previewUrls[0]} 
+                                                alt="Primary Preview" 
+                                                className="w-full h-full object-contain brightness-110 drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+                                            />
+                                            <div className="absolute bottom-4 right-4 glass-card px-3 py-1 rounded-full border border-white/10">
+                                                <span className="text-[8px] font-black text-blue-500 uppercase tracking-widest">Main Node</span>
+                                            </div>
+                                        </div>
                                     ) : (
-                                        <div className="flex flex-col items-center gap-4 text-gray-300 group-hover:text-pink-300 transition-colors">
-                                            <ImageIcon size={64} strokeWidth={1} />
-                                            <p className="text-sm font-bold">Pick primary image</p>
+                                        <div className="flex flex-col items-center gap-6 text-zinc-800 group-hover:text-blue-500 group-hover:scale-110 transition-all duration-700">
+                                            <div className="w-20 h-20 rounded-3xl bg-white/5 flex items-center justify-center border border-white/5 shadow-2xl">
+                                                <ImageIcon size={36} strokeWidth={1} />
+                                            </div>
+                                            <div className="text-center">
+                                                <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-1">Upload Interface</p>
+                                                <p className="text-[8px] opacity-40 font-black uppercase tracking-widest">Max 5 units</p>
+                                            </div>
                                         </div>
                                     )}
                                     <input 
@@ -285,56 +306,62 @@ const AddProduct = () => {
                                 </div>
 
                                 {/* Thumbnails & Add Button */}
-                                <div className="grid grid-cols-4 gap-3">
+                                <div className="grid grid-cols-4 gap-4">
                                     {previewUrls.map((url, idx) => (
-                                        <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border border-gray-100 group/thumb">
-                                            <img src={url} className="w-full h-full object-cover" />
+                                        <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden border border-white/5 group/thumb hover:scale-105 transition-transform shadow-2xl">
+                                            <img src={url} className="w-full h-full object-cover brightness-110" />
                                             <button 
                                                 type="button"
                                                 onClick={() => removeImage(idx)}
-                                                className="absolute inset-0 bg-red-600/80 flex items-center justify-center text-white opacity-0 group-hover/thumb:opacity-100 transition-opacity"
+                                                className="absolute inset-0 bg-red-600/90 flex items-center justify-center text-white opacity-0 group-hover/thumb:opacity-100 transition-all backdrop-blur-sm"
                                             >
-                                                <Plus className="rotate-45" size={20} />
+                                                <Plus className="rotate-45" size={24} strokeWidth={3} />
                                             </button>
                                         </div>
                                     ))}
                                     {previewUrls.length < 5 && (
-                                        <label htmlFor="file-upload" className="aspect-square rounded-xl border-2 border-dashed border-gray-100 flex items-center justify-center text-gray-300 hover:border-pink-200 hover:text-pink-300 cursor-pointer transition-all">
-                                            <Plus size={20} />
+                                        <label htmlFor="file-upload" className="aspect-square rounded-2xl border-2 border-dashed border-white/5 bg-white/5 flex items-center justify-center text-zinc-800 hover:border-blue-500/50 hover:text-blue-500/50 cursor-pointer transition-all hover:scale-105 shadow-inner">
+                                            <Plus size={24} />
                                         </label>
                                     )}
                                 </div>
                             </div>
                             
-                            <div className="bg-pink-50/50 rounded-2xl p-4 border border-pink-100/30 mt-6">
-                                <div className="flex gap-3">
-                                    <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 flex-shrink-0">
-                                        <Info size={14} />
+                            <div className="bg-blue-600/5 rounded-[24px] p-6 border border-blue-500/10 mt-10">
+                                <div className="flex gap-4">
+                                    <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-500 flex-shrink-0 animate-pulse">
+                                        <Info size={16} />
                                     </div>
-                                    <p className="text-[11px] font-medium text-pink-800 leading-relaxed">
-                                        Upload up to 5 images. The first image will be your primary storefront visual.
+                                    <p className="text-[10px] font-black text-zinc-600 leading-relaxed uppercase tracking-[0.1em]">
+                                        Unit visual assets are buffered locally before transmission.
                                     </p>
                                 </div>
                             </div>
                         </div>
 
                         {/* Inventory Card */}
-                        <div className="bg-gray-900 rounded-[32px] p-8 text-white shadow-2xl shadow-gray-400/20 flex flex-col items-center text-center overflow-hidden relative">
-                            <div className="absolute -right-8 -top-8 w-32 h-32 bg-pink-600/10 rounded-full blur-3xl" />
-                            <div className="w-12 h-12 bg-pink-600 rounded-2xl flex items-center justify-center mb-4 relative z-10">
-                                <Package size={20} className="text-white" />
+                        <div className="glass-card rounded-[40px] p-10 text-white shadow-2xl border border-white/5 flex flex-col items-center text-center overflow-hidden relative group">
+                            <div className="absolute -right-8 -top-8 w-40 h-40 bg-blue-600/5 rounded-full blur-3xl opacity-50 group-hover:scale-150 transition-transform duration-1000" />
+                            <div className="w-16 h-16 bg-blue-600/10 rounded-2xl flex items-center justify-center mb-8 relative z-10 shadow-inner border border-blue-500/20 group-hover:bg-blue-600 transition-colors duration-500">
+                                <Package size={28} className="text-blue-500 group-hover:text-white" strokeWidth={1.5} />
                             </div>
-                            <h4 className="font-black text-lg mb-1 relative z-10">Asset Manager</h4>
-                            <p className="text-gray-400 text-sm font-medium px-4 relative z-10">Your store will be updated instantly across all regions.</p>
-                            <div className="mt-6 pt-6 border-t border-white/5 w-full flex justify-around relative z-10">
-                                <div className="text-center">
-                                    <p className="text-pink-500 font-bold text-xl leading-none">AUTO</p>
-                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mt-1">Scaling</p>
+                            <h4 className="font-black text-2xl mb-3 relative z-10 tracking-tighter uppercase italic">Global Manager</h4>
+                            <p className="text-zinc-600 text-[10px] font-black uppercase tracking-[0.2em] px-4 relative z-10 leading-relaxed">Infrastructure will propagate unit data to all active network nodes instantly.</p>
+                            
+                            <div className="mt-12 pt-10 border-t border-white/5 w-full flex justify-around relative z-10">
+                                <div className="text-center group/stat cursor-pointer">
+                                    <p className="text-blue-500 font-black text-3xl leading-none group-hover/stat:scale-125 transition-transform duration-500 italic">AUTO</p>
+                                    <p className="text-[9px] text-zinc-700 font-black uppercase tracking-widest mt-3">Scaling</p>
                                 </div>
-                                <div className="text-center">
-                                    <p className="text-white font-bold text-xl leading-none">SSL</p>
-                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mt-1">Secure</p>
+                                <div className="text-center group/stat cursor-pointer">
+                                    <p className="text-white font-black text-3xl leading-none group-hover/stat:scale-125 transition-transform duration-500 italic">SECURE</p>
+                                    <p className="text-[9px] text-zinc-700 font-black uppercase tracking-widest mt-3">SSL-LOCKED</p>
                                 </div>
+                            </div>
+                            
+                            <div className="mt-10 pt-8 flex items-center justify-center gap-3 relative z-10">
+                                <ShieldCheck size={16} className="text-zinc-800" />
+                                <span className="text-[8px] font-black text-zinc-800 uppercase tracking-[0.4em]">Verified Admin Connection</span>
                             </div>
                         </div>
                     </div>

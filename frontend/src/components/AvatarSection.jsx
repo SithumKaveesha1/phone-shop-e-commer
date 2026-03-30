@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Label } from './ui/label';
+import { Camera } from 'lucide-react';
 
 const AvatarSection = ({ user, onImageChange }) => {
     const [preview, setPreview] = useState(user?.profilePic || "/profile.png");
@@ -10,23 +11,46 @@ const AvatarSection = ({ user, onImageChange }) => {
             const reader = new FileReader();
             reader.onloadend = () => {
                 setPreview(reader.result);
-                onImageChange(reader.result); // Passing base64 to parent
+                onImageChange(reader.result);
             };
             reader.readAsDataURL(file);
         }
     };
 
     return (
-        <div className='flex flex-col items-center mb-8 md:mb-0'>
+        <div className='flex flex-col items-center mb-12 md:mb-0 group'>
             <div className="relative">
-                <img 
-                    src={preview} 
-                    alt="profile" 
-                    className='w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-pink-100 shadow-md' 
-                />
+                {/* Glow Ring */}
+                <div className="absolute -inset-4 bg-gradient-to-tr from-blue-600/20 to-purple-600/20 rounded-full blur-2xl group-hover:opacity-100 opacity-0 transition-opacity duration-700" />
+                
+                <div className="relative w-40 h-40 md:w-52 md:h-52 rounded-[60px] overflow-hidden border-2 border-white/5 shadow-2xl transition-transform duration-700 group-hover:scale-105">
+                    <img 
+                        src={preview} 
+                        alt="profile" 
+                        className='w-full h-full object-cover brightness-110' 
+                    />
+                    
+                    {/* Hover Overlay */}
+                    <Label className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                        <Camera size={32} className="text-white mb-2" />
+                        <span className="text-[10px] font-black text-white uppercase tracking-widest">Update Node</span>
+                        <input 
+                            type="file" 
+                            accept='image/*' 
+                            className='hidden' 
+                            onChange={handleFileChange}
+                        />
+                    </Label>
+                </div>
             </div>
-            <Label className='mt-6 cursor-pointer bg-pink-600 text-white px-6 py-2.5 rounded-full hover:bg-pink-700 transition-colors shadow-sm font-medium'>
-                Change Picture
+
+            <div className="mt-8 text-center">
+                <h3 className="text-2xl font-black text-white tracking-tighter uppercase">{user?.firstname} {user?.lastname}</h3>
+                <p className="text-blue-500 text-[10px] font-black uppercase tracking-[0.3em] mt-1 italic">Active Operator</p>
+            </div>
+            
+            <Label className='mt-8 cursor-pointer glass-card border border-white/5 text-zinc-400 px-8 py-3 rounded-2xl hover:bg-white/10 hover:text-white transition-all shadow-xl font-black uppercase tracking-widest text-[11px]'>
+                Change Interface
                 <input 
                     type="file" 
                     accept='image/*' 

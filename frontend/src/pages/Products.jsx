@@ -1,12 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import FilterSidebar from '../components/FilterSidebar';
 import ProductCard from '../components/ProductCard';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { Plus, SlidersHorizontal, PackageSearch } from 'lucide-react';
-import { Link } from 'react-router-dom';
-
+import { Plus, LayoutGrid, Layout, Search, PackageSearch } from 'lucide-react';
 
 const Products = () => {
   const { user } = useSelector(state => state.user);
@@ -67,104 +65,133 @@ const Products = () => {
     setProducts(prev => prev.filter(p => p._id !== deletedId));
   };
 
-  // Filter & Sort Logic
   const filteredProducts = useMemo(() => {
-    console.log("Filtering with:", filters);
     const filtered = products.filter((product) => {
       const matchSearch = product.name?.toLowerCase().includes(filters.search.toLowerCase()) || false;
       const matchCategory = filters.category === 'All' || product.category?.toLowerCase() === filters.category?.toLowerCase();
       const matchBrand = filters.brand === 'All' || product.brand?.toLowerCase() === filters.brand?.toLowerCase();
       const matchPrice = Number(product.price) >= Number(filters.minPrice) && Number(product.price) <= Number(filters.maxPrice);
-      
-      const isMatch = matchSearch && matchCategory && matchBrand && matchPrice;
-      return isMatch;
+      return matchSearch && matchCategory && matchBrand && matchPrice;
     });
+    
     return filtered.sort((a, b) => {
-        if (sortOrder === 'lowToHigh') return a.price - b.price;
-        if (sortOrder === 'highToLow') return b.price - a.price;
-        return 0;
+      if (sortOrder === 'lowToHigh') return a.price - b.price;
+      if (sortOrder === 'highToLow') return b.price - a.price;
+      return 0;
     });
   }, [filters, sortOrder, products]);
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] pt-24 pb-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8">
+    <div className="min-h-screen bg-[#f5f5f7] pt-24 pb-20 relative overflow-hidden">
+      <div className="max-w-[1400px] mx-auto px-6 sm:px-8 relative z-10">
         
-        {/* Left Sidebar */}
-        <aside className="w-full md:w-64 flex-shrink-0">
-          <FilterSidebar filters={filters} setFilters={setFilters} onReset={handleReset} />
-        </aside>
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-2 text-[10px] font-black text-zinc-400 mb-10 uppercase tracking-[0.3em] bg-white w-fit px-6 py-2 rounded-full border border-zinc-100 shadow-sm">
+          <Link to="/" className="hover:text-blue-600 transition-colors">Home</Link>
+          <span className="text-zinc-200">/</span>
+          <span className="text-zinc-900">{filters.category}</span>
+          <div className="w-1.5 h-1.5 rounded-full bg-blue-600 mx-4" />
+          <span className="text-zinc-500 normal-case tracking-normal font-bold">
+            {filteredProducts.length} devices found
+          </span>
+        </nav>
 
-        {/* Main Content Areas */}
-        <main className="flex-1">
-          {/* Top Header / Sorting */}
-          <div className="bg-white/80 backdrop-blur-md p-6 rounded-3xl shadow-xl shadow-gray-200/40 border border-white mb-8 flex flex-col lg:flex-row justify-between items-center gap-6 animate-in fade-in slide-in-from-top-4 duration-700">
-            <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
-              <h1 className="text-5xl font-black text-gray-900 tracking-tight leading-none flex items-baseline gap-2 border-b-4 border-pink-500 pb-2">
-    Product <span className="text-pink-600 drop-shadow-[0_10px_10px_rgba(219,39,119,0.2)]">Catalog</span>
-</h1>
-              <span className="text-pink-600 px-3 py-1 bg-pink-50 rounded-full text-sm font-bold border border-pink-100">{filteredProducts.length} Items</span>
-              {/* Add Product Button for Admins */}
-              {user?.role === 'admin' && (
+        <div className="flex flex-col lg:flex-row gap-16">
+          
+          {/* Sidebar */}
+          <aside className="w-full lg:w-[300px] flex-shrink-0">
+             <FilterSidebar filters={filters} setFilters={setFilters} onReset={handleReset} />
+          </aside>
+
+          {/* Main Area */}
+          <section className="flex-1">
+            
+            {/* Top Bar Controls */}
+            <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-10">
+                <div className="space-y-1">
+                  <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-zinc-900 mb-2">{filters.category}</h1>
+                  <p className="text-xs font-black text-zinc-400 uppercase tracking-[0.4em] ml-1">Premium Selection</p>
+                </div>
+                
+                <div className="flex flex-wrap items-center gap-8 bg-white p-3 rounded-3xl border border-zinc-100 shadow-sm group">
+                    <div className="flex items-center gap-5 px-4 h-10 border-r border-zinc-100">
+                        <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Show:</span>
+                        <div className="flex gap-4">
+                            {['9', '12', '18', '24'].map(n => (
+                                <button key={n} className={`text-xs font-black transition-all ${n === '12' ? 'text-blue-600 scale-110' : 'text-zinc-400 hover:text-zinc-900'}`}>{n}</button>
+                            ))}
+                        </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-4 h-10 border-r border-zinc-100 pr-8">
+                        <div className="bg-zinc-50 p-2 rounded-xl border border-zinc-100">
+                          <LayoutGrid size={18} className="text-blue-600 cursor-pointer" />
+                        </div>
+                        <Layout size={18} className="text-zinc-300 hover:text-blue-600 transition-colors cursor-pointer" />
+                    </div>
+
+                    <div className="relative pr-6">
+                        <select 
+                            value={sortOrder}
+                            onChange={(e) => setSortOrder(e.target.value)}
+                            className="bg-transparent border-none text-[10px] font-black text-zinc-700 uppercase tracking-[0.2em] outline-none cursor-pointer appearance-none min-w-[180px]"
+                        >
+                            <option value="relevant">Sort by popularity</option>
+                            <option value="lowToHigh">Price: Low to High</option>
+                            <option value="highToLow">Price: High to Low</option>
+                        </select>
+                        <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-400">
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Admin Action */}
+            {user?.role === 'admin' && user?.email === 'sithumkaveesha1212@gmail.com' && (
+              <div className="mb-12">
                 <Link 
                   to="/admin/add-product"
-                  className="flex items-center gap-2 bg-gray-900 text-white px-5 py-2.5 rounded-2xl hover:bg-pink-600 transition-all shadow-lg active:scale-95 group font-bold text-sm"
+                  className="inline-flex items-center gap-4 bg-zinc-900 hover:bg-black text-white px-8 py-4.5 rounded-[24px] transition-all shadow-xl active:scale-95 group font-black text-xs uppercase tracking-[0.2em]"
                 >
-                  <Plus size={18} className="group-hover:rotate-90 transition-transform" />
-                  Add New Product
+                  <Plus size={22} strokeWidth={3} className="group-hover:rotate-90 transition-transform" />
+                  Launch New Product
                 </Link>
-              )}
-            </div>
+              </div>
+            )}
 
-            <div className="flex items-center gap-4 w-full sm:w-auto justify-end">
-              <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-2xl border border-gray-100">
-                <SlidersHorizontal size={14} className="text-gray-400" />
-                <label className="text-xs font-black text-gray-400 uppercase tracking-widest">Sort by</label>
-                <select
-                  value={sortOrder}
-                  onChange={(e) => setSortOrder(e.target.value)}
-                  className="bg-transparent border-none focus:ring-0 text-sm font-bold text-gray-700 cursor-pointer outline-none min-w-[120px]"
+            {/* Grid */}
+            {loading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="bg-white animate-pulse rounded-[48px] aspect-[4/5] border border-zinc-100"></div>
+                ))}
+              </div>
+            ) : filteredProducts.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10">
+                {filteredProducts.map((product) => (
+                  <ProductCard key={product._id} product={product} onDelete={handleProductDelete} />
+                ))}
+              </div>
+            ) : (
+              <div className="bg-white p-24 rounded-[60px] border border-zinc-100 flex flex-col items-center justify-center text-center shadow-sm relative overflow-hidden group">
+                <div className="w-32 h-32 bg-zinc-50 rounded-full flex items-center justify-center mb-10 text-zinc-300 border border-zinc-100 shadow-inner">
+                   <PackageSearch size={64} strokeWidth={1} />
+                </div>
+                <h3 className="text-3xl font-black text-zinc-900 mb-4 tracking-tight">No units found</h3>
+                <p className="text-zinc-500 max-w-sm mx-auto mb-12 text-base font-medium leading-relaxed">Try adjusting your filters or search parameters.</p>
+                <button 
+                  onClick={handleReset}
+                  className="px-12 py-5 bg-zinc-900 text-white font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl hover:bg-blue-600 transition-all shadow-xl active:scale-95"
                 >
-                  <option value="relevant">Relevant</option>
-                  <option value="lowToHigh">Price: Low to High</option>
-                  <option value="highToLow">Price: High to Low</option>
-                </select>
+                  Clear All Filters
+                </button>
               </div>
-            </div>
-          </div>
-
-
-          {/* Product Grid */}
-          {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="bg-gray-200 animate-pulse rounded-xl h-80"></div>
-              ))}
-            </div>
-          ) : filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredProducts.map((product) => (
-                <ProductCard key={product._id} product={product} onDelete={handleProductDelete} />
-              ))}
-            </div>
-          ) : (
-            <div className="bg-white p-12 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center">
-              <div className="text-gray-400 mb-4">
-                 <svg className="w-16 h-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                 </svg>
-              </div>
-              <h3 className="text-xl font-medium text-gray-900 mb-2">No products found</h3>
-              <p className="text-gray-500">Try adjusting your filters or search term to find what you're looking for.</p>
-              <button 
-                onClick={handleReset}
-                className="mt-6 px-6 py-2 bg-pink-100 text-pink-700 font-medium rounded-md hover:bg-pink-200 transition-colors"
-              >
-                Clear All Filters
-              </button>
-            </div>
-          )}
-        </main>
+            )}
+          </section>
+        </div>
       </div>
     </div>
   );

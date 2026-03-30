@@ -8,7 +8,7 @@ import { Monitor, Cpu, Battery, Smartphone, Watch, Tablet } from 'lucide-react'
 
 const Home = () => {
   return (
-    <div className="bg-white">
+    <div className="bg-black">
       <Hero />
       <CategoryGrid />
       <TheLatest />
