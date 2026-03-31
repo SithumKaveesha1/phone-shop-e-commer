@@ -163,8 +163,9 @@ const seedDB = async () => {
         console.log("MongoDB Connected...");
         await Product.deleteMany({}); // Clear existing to prevent duplicates
         console.log("Deleted old products.");
-        await Product.insertMany(products);
-        console.log(`${products.length} Products Seeded successfully!`);
+        const productsWithStock = products.map(p => ({ ...p, stock: 10 }));
+        await Product.insertMany(productsWithStock);
+        console.log(`${products.length} Products Seeded successfully with default stock!`);
         process.exit();
     } catch (error) {
         console.error("Error seeding database:", error);

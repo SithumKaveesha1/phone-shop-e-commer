@@ -39,7 +39,7 @@ const ProductCard = ({ product, onDelete, viewMode = 'grid' }) => {
     ? product.colors 
     : ['#18181b', '#d4d4d8', '#3b82f6', '#fb7185', '#facc15']; // Default fallback colors
 
-  const isSoldOut = product.price > 1000000 || product.name.includes("Mini"); 
+  const isSoldOut = product.stock === 0; 
 
   const handleColorChange = (index) => {
     setActiveIndex(index);

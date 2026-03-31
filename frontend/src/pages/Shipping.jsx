@@ -1,39 +1,52 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { MapPin, Phone, User, ArrowRight, Check } from 'lucide-react';
+import { MapPin, Phone, User, ArrowRight, Check, ChevronLeft } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 
 const CheckoutStepper = ({ currentStep }) => {
+    const navigate = useNavigate();
     const steps = ['Shipping', 'Payment', 'Review', 'Success'];
     return (
-        <div className="flex items-center justify-center mb-16 relative z-10 w-full max-w-2xl mx-auto">
-            {steps.map((step, index) => (
-                <React.Fragment key={step}>
-                    <div className="flex flex-col items-center relative">
-                        <div className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-700 ${
-                            index < currentStep 
-                            ? 'bg-blue-600 border-blue-600 text-white shadow-sm' 
-                            : index === currentStep
-                            ? 'bg-white border-blue-600 text-blue-600 shadow-sm shadow-blue-500/10'
-                            : 'bg-zinc-50 border-zinc-200 text-zinc-400'
-                        }`}>
-                            {index < currentStep ? <Check size={22} className="stroke-[3]" /> : <span className="font-black">{index + 1}</span>}
+        <div className="flex flex-col md:flex-row items-center justify-center mb-16 relative z-10 w-full max-w-4xl mx-auto gap-8 md:gap-0">
+            <div className="absolute left-0 -top-4 md:top-1/2 md:-translate-y-1/2">
+                <Button 
+                    variant="ghost" 
+                    onClick={() => navigate('/products')}
+                    className="group flex items-center gap-2 text-zinc-400 hover:text-zinc-900 transition-all font-black uppercase tracking-[0.2em] text-[10px]"
+                >
+                    <ChevronLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
+                    Exit
+                </Button>
+            </div>
+            <div className="flex items-center justify-center flex-1 w-full md:w-auto">
+                {steps.map((step, index) => (
+                    <React.Fragment key={step}>
+                        <div className="flex flex-col items-center relative">
+                            <div className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-700 ${
+                                index < currentStep 
+                                ? 'bg-blue-600 border-blue-600 text-white shadow-sm' 
+                                : index === currentStep
+                                ? 'bg-white border-blue-600 text-blue-600 shadow-sm shadow-blue-500/10'
+                                : 'bg-zinc-50 border-zinc-200 text-zinc-400'
+                            }`}>
+                                {index < currentStep ? <Check size={22} className="stroke-[3]" /> : <span className="font-black">{index + 1}</span>}
+                            </div>
+                            <span className={`absolute -bottom-8 text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap ${
+                                index <= currentStep ? 'text-zinc-900' : 'text-zinc-400'
+                            }`}>
+                                {step}
+                            </span>
                         </div>
-                        <span className={`absolute -bottom-8 text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap ${
-                            index <= currentStep ? 'text-zinc-900' : 'text-zinc-400'
-                        }`}>
-                            {step}
-                        </span>
-                    </div>
-                    {index < steps.length - 1 && (
-                        <div className={`flex-1 h-[2px] mx-2 sm:mx-4 rounded-full transition-all duration-1000 ${
-                            index < currentStep ? 'bg-blue-600' : 'bg-zinc-200'
-                        }`}></div>
-                    )}
-                </React.Fragment>
-            ))}
+                        {index < steps.length - 1 && (
+                            <div className={`flex-1 h-[2px] mx-2 sm:mx-4 rounded-full transition-all duration-1000 ${
+                                index < currentStep ? 'bg-blue-600' : 'bg-zinc-200'
+                            }`}></div>
+                        )}
+                    </React.Fragment>
+                ))}
+            </div>
         </div>
     );
 };

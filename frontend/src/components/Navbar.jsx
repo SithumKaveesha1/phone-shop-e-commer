@@ -140,8 +140,8 @@ const Navbar = () => {
                                     <User size={18} className="text-white" />
                                 </div>
                                 <div className="hidden xl:flex flex-col items-start leading-none gap-1">
-                                    <span className="text-[9px] font-black uppercase tracking-[0.3em]">{user.firstname}</span>
-                                    <span className="text-[6px] font-black text-zinc-600 uppercase tracking-widest">{user?.role} node</span>
+                                    <span className="text-[9px] font-black uppercase tracking-[0.3em] font-sans">{user.firstname}</span>
+                                    <span className="text-[6px] font-black text-blue-500 uppercase tracking-[0.4em]">{user?.role === 'admin' ? 'Administrator' : 'Verified User'}</span>
                                 </div>
                             </Link>
 

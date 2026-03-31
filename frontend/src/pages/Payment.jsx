@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CreditCard, Banknote, ArrowRight, ChevronLeft, ShieldCheck } from 'lucide-react';
+import { CreditCard, Banknote, ArrowRight, ChevronLeft, ShieldCheck, Zap } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { CheckoutStepper } from './Shipping';
 
@@ -24,11 +24,18 @@ const Payment = () => {
             color: 'text-blue-500',
         },
         {
+            id: 'koko',
+            title: 'KOKO PAY (Installments)',
+            description: 'Split into 3 interest-free payments. Instant allocation.',
+            icon: <Zap className="w-7 h-7" />,
+            color: 'text-emerald-500',
+        },
+        {
             id: 'cod',
             title: 'Physical Exchange (COD)',
             description: 'Finalize payment upon hardware delivery.',
             icon: <Banknote className="w-7 h-7" />,
-            color: 'text-emerald-500',
+            color: 'text-zinc-500',
         }
     ];
 
@@ -73,7 +80,7 @@ const Payment = () => {
                                         <h3 className={`font-black text-xl tracking-tighter ${
                                             paymentMethod === method.id ? 'text-zinc-900' : 'text-zinc-700 group-hover:text-zinc-900'
                                         }`}>
-                                            {method.title === 'Digital Workspace Payment' ? 'Credit / Debit Card' : 'Cash on Delivery'}
+                                            {method.title}
                                         </h3>
                                         <p className="text-zinc-500 text-[11px] font-bold uppercase tracking-widest mt-2">{method.description}</p>
                                     </div>
