@@ -31,7 +31,7 @@ const OrderSuccess = () => {
                     </div>
 
                     <div className="space-y-6 max-w-xl mb-16 animate-in slide-in-from-bottom-12 duration-700">
-                        <h1 className="text-5xl md:text-7xl font-black text-zinc-900 tracking-tighter leading-none uppercase">
+                        <h1 className="text-5xl md:text-7xl font-black text-zinc-900 tracking-tighter leading-[1.1] uppercase">
                             Order <span className="text-blue-600 italic">Confirmed.</span>
                         </h1>
                         <p className="text-zinc-500 text-sm font-bold uppercase tracking-[0.2em] max-w-md mx-auto leading-relaxed">

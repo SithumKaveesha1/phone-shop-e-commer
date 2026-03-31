@@ -81,15 +81,15 @@ const Navbar = () => {
                 </div>
 
                 {/* Desktop Navigation - Minimalist High-End */}
-                <nav className='hidden lg:contents'>
-                    <ul className='flex items-center gap-12 font-black text-white/40 text-[9px] uppercase tracking-[0.6em] transition-all duration-700'>
+                <nav className='hidden lg:flex-1 lg:flex lg:justify-center lg:items-center'>
+                    <ul className='flex items-center gap-12 font-black text-white/40 text-[10px] uppercase tracking-[0.5em] transition-all duration-700'>
                         {categories.map((cat) => (
                             <Link 
                                 key={cat.name} 
                                 to={cat.path} 
                                 className="hover:text-white transition-all duration-500 relative group"
                             >
-                                <li className="relative z-10 group-hover:scale-110 transition-transform">{cat.name}</li>
+                                <li className="relative z-10 group-hover:scale-110 transition-transform pt-1">{cat.name}</li>
                                 <div className="absolute inset-x-[-10px] -bottom-3 h-[1px] bg-gradient-to-r from-transparent via-blue-600 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                             </Link>
                         ))}
@@ -124,7 +124,7 @@ const Navbar = () => {
                         </button>
                     </div>
 
-                    <Link to="/cart" className='relative p-3 text-white/30 hover:text-blue-500 transition-all group overflow-visible'>
+                    <Link to="/cart" className='relative p-3 text-white/30 hover:text-blue-500 transition-all group overflow-visible pt-4'>
                          <ShoppingCart size={22} strokeWidth={2.5} className='group-hover:scale-110 transition-all duration-500 group-hover:drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]' />
                          {cartItems.length > 0 && (
                             <span className='absolute top-0 right-0 bg-blue-600 text-white text-[8px] font-black w-5 h-5 flex items-center justify-center rounded-full shadow-[0_5px_20px_rgba(59,130,246,0.8)] animate-in zoom-in-50 duration-500 border border-black'>
@@ -139,7 +139,7 @@ const Navbar = () => {
                                 <div className="w-11 h-11 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-blue-600 group-hover:border-blue-500 group-hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] transition-all duration-500">
                                     <User size={18} className="text-white" />
                                 </div>
-                                <div className="hidden xl:flex flex-col items-start leading-none gap-1">
+                                <div className="hidden xl:flex flex-col items-start leading-[1.2] gap-1 pt-1">
                                     <span className="text-[9px] font-black uppercase tracking-[0.3em] font-sans">{user.firstname}</span>
                                     <span className="text-[6px] font-black text-blue-500 uppercase tracking-[0.4em]">{user?.role === 'admin' ? 'Administrator' : 'Verified User'}</span>
                                 </div>

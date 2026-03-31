@@ -184,7 +184,7 @@ const ProductDetail = () => {
                     {/* Right: Info Column */}
                     <div className="lg:col-span-5 flex flex-col space-y-12">
                         <div className="space-y-4">
-                            <h1 className="text-5xl md:text-6xl font-black text-zinc-900 tracking-tighter leading-none h-auto py-2">
+                            <h1 className="text-5xl md:text-6xl font-black text-zinc-900 tracking-tighter leading-[1.1] h-auto py-2 mt-4">
                                 {product.name}
                             </h1>
                             
@@ -196,10 +196,10 @@ const ProductDetail = () => {
                                         `LKR ${currentPrice.toLocaleString('en-LK')}`
                                     )}
                                 </span>
-                                <div className="flex items-center gap-3 text-[10px] font-black text-zinc-500 uppercase tracking-widest bg-zinc-50 p-3 rounded-2xl w-fit border border-zinc-100">
-                                    <span>or</span>
-                                    <span>3 X LKR {(currentPrice / 3).toLocaleString('en-LK', {maximumFractionDigits: 0})} with</span>
-                                    <span className="text-blue-500 italic px-1">KOKO</span>
+                                <div className="flex items-center h-10 gap-3 text-[10px] font-black text-zinc-500 uppercase tracking-widest bg-zinc-50 px-5 py-2 rounded-2xl w-fit border border-zinc-100 shadow-sm">
+                                    <span className="pt-1.5">or</span>
+                                    <span className="pt-1.5">3 X LKR {(currentPrice / 3).toLocaleString('en-LK', {maximumFractionDigits: 0})} with</span>
+                                    <span className="text-blue-500 italic px-1 pt-1.5">KOKO</span>
                                     <Info size={14} className="cursor-pointer hover:text-blue-600 transition-colors text-zinc-400" />
                                 </div>
                             </div>
@@ -280,7 +280,7 @@ const ProductDetail = () => {
                             <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {features.slice(0, 16).map((stat, i) => (
                                     <li key={i} className="flex gap-4 text-xs text-zinc-500 font-bold group">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-zinc-300 mt-1 shadow-sm transition-all group-hover:scale-150 group-hover:bg-blue-600" />
+                                        <div className="w-1.5 h-1.5 rounded-full bg-zinc-300 mt-[2px] shadow-sm transition-all group-hover:scale-150 group-hover:bg-blue-600" />
                                         <span className="group-hover:text-zinc-900 transition-colors uppercase tracking-tight leading-tight">{stat}</span>
                                     </li>
                                 ))}
