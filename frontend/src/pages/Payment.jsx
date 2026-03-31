@@ -6,7 +6,9 @@ import { CheckoutStepper } from './Shipping';
 
 const Payment = () => {
     const navigate = useNavigate();
-    const [paymentMethod, setPaymentMethod] = useState(localStorage.getItem('paymentMethod') || 'card');
+    const [paymentMethod, setPaymentMethod] = useState(
+        typeof window !== 'undefined' ? localStorage.getItem('paymentMethod') || 'card' : 'card'
+    );
 
     const handleContinue = () => {
         localStorage.setItem('paymentMethod', paymentMethod);
@@ -51,7 +53,11 @@ const Payment = () => {
                             {methods.map((method) => (
                                 <div 
                                     key={method.id}
-                                    onClick={() => setPaymentMethod(method.id)}
+                                    onClick={() => {
+                                        setPaymentMethod(method.id);
+                                        localStorage.setItem('paymentMethod', method.id);
+                                        navigate('/checkout/review');
+                                    }}
                                     className={`group cursor-pointer p-8 rounded-[32px] border-2 transition-all flex items-center gap-8 relative overflow-hidden ${
                                         paymentMethod === method.id 
                                         ? 'border-blue-600 bg-blue-50 shadow-sm' 

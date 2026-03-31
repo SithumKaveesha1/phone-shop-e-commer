@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { ShoppingBag, MapPin, CreditCard, Banknote, ChevronLeft, CheckCircle2 } from 'lucide-react';
+import { ShoppingBag, MapPin, CreditCard, Banknote, ChevronLeft, CheckCircle2, ArrowRight } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { CheckoutStepper } from './Shipping';
 import { clearCart } from '../redux/cartSlice';
@@ -11,8 +11,12 @@ const OrderReview = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { items: cartItems } = useSelector(state => state.cart);
-    const shippingAddress = JSON.parse(localStorage.getItem('shippingAddress') || '{}');
-    const paymentMethod = localStorage.getItem('paymentMethod') || 'card';
+    const shippingAddress = typeof window !== 'undefined' 
+        ? JSON.parse(localStorage.getItem('shippingAddress') || '{}') 
+        : {};
+    const paymentMethod = typeof window !== 'undefined' 
+        ? localStorage.getItem('paymentMethod') || 'card' 
+        : 'card';
 
     const totalAmount = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
