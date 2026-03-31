@@ -49,19 +49,19 @@ const Signup = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-[100dvh] bg-black p-4 relative overflow-hidden">
+        <div className="flex items-center justify-center min-h-[100dvh] bg-[#f5f5f7] p-4 relative overflow-hidden">
             {/* Background Glows */}
             <div className="mesh-glow bg-blue-600/10 w-[800px] h-[800px] absolute -top-40 -right-60 opacity-30 blur-[180px] animate-pulse" />
             <div className="mesh-glow bg-purple-600/10 w-[600px] h-[600px] absolute bottom-0 left-0 opacity-20 blur-[150px]" />
 
             <div className="w-full max-w-[480px] relative z-10 animate-in fade-in zoom-in-95 duration-700">
-                <Card className="glass-card border border-white/5 shadow-2xl rounded-[40px] overflow-hidden backdrop-blur-3xl">
+                <Card className="bg-white border border-zinc-200 shadow-sm rounded-[40px] overflow-hidden backdrop-blur-3xl">
                     <CardHeader className="space-y-4 pb-8 pt-12 text-center">
                         <div className="w-20 h-20 bg-blue-500/10 rounded-[28px] flex items-center justify-center text-blue-500 border border-blue-500/10 mx-auto mb-4 shadow-[0_0_30px_rgba(59,130,246,0.1)] transition-transform hover:rotate-12">
                             <UserPlus size={32} />
                         </div>
-                        <CardTitle className="text-4xl font-black text-white tracking-tighter uppercase leading-none">Create Identity</CardTitle>
-                        <CardDescription className="text-[10px] text-zinc-600 font-black uppercase tracking-[0.2em]">
+                        <CardTitle className="text-4xl font-black text-zinc-900 tracking-tighter uppercase leading-none">Create Identity</CardTitle>
+                        <CardDescription className="text-[10px] text-zinc-500 font-black uppercase tracking-[0.2em]">
                             Initialize your operational profile
                         </CardDescription>
                     </CardHeader>
@@ -81,7 +81,7 @@ const Signup = () => {
                                         required
                                         value={formData.firstname}
                                         onChange={handleChange}
-                                        className="h-16 bg-white/5 border-white/5 text-white placeholder:text-zinc-800 rounded-2xl focus:border-blue-500/50 transition-all font-black"
+                                        className="h-16 bg-zinc-50 border-zinc-200 text-zinc-900 placeholder:text-zinc-400 rounded-2xl focus:border-blue-500/50 transition-all font-black"
                                     />
                                 </div>
                                 <div className="space-y-3">
@@ -92,7 +92,7 @@ const Signup = () => {
                                         required
                                         value={formData.lastname}
                                         onChange={handleChange}
-                                        className="h-16 bg-white/5 border-white/5 text-white placeholder:text-zinc-800 rounded-2xl focus:border-blue-500/50 transition-all font-black"
+                                        className="h-16 bg-zinc-50 border-zinc-200 text-zinc-900 placeholder:text-zinc-400 rounded-2xl focus:border-blue-500/50 transition-all font-black"
                                     />
                                 </div>
                             </div>
@@ -105,7 +105,7 @@ const Signup = () => {
                                     required
                                     value={formData.email}
                                     onChange={handleChange}
-                                    className="h-16 bg-white/5 border-white/5 text-white placeholder:text-zinc-800 rounded-2xl focus:border-blue-500/50 transition-all font-black"
+                                    className="h-16 bg-zinc-50 border-zinc-200 text-zinc-900 placeholder:text-zinc-400 rounded-2xl focus:border-blue-500/50 transition-all font-black"
                                 />
                             </div>
                             <div className="space-y-3">
@@ -118,12 +118,12 @@ const Signup = () => {
                                         placeholder="••••••••"
                                         value={formData.password}
                                         onChange={handleChange}
-                                        className="h-16 bg-white/5 border-white/5 text-white placeholder:text-zinc-800 rounded-2xl focus:border-blue-500/50 transition-all font-black pr-14"
+                                        className="h-16 bg-zinc-50 border-zinc-200 text-zinc-900 placeholder:text-zinc-400 rounded-2xl focus:border-blue-500/50 transition-all font-black pr-14"
                                     />
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-5 top-1/2 -translate-y-1/2 text-zinc-700 hover:text-white transition-colors"
+                                        className="absolute right-5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
                                     >
                                         {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                                     </button>
@@ -137,16 +137,16 @@ const Signup = () => {
                                 {loading ? "Initializing..." : "Register Identity"}
                             </Button>
                         </form>
-                        <div className="mt-12 text-center text-[10px] text-zinc-600 font-black uppercase tracking-[0.2em]">
+                        <div className="mt-12 text-center text-[10px] text-zinc-500 font-black uppercase tracking-[0.2em]">
                             Already Synchronized?{" "}
-                            <Link to="/login" className="text-white hover:text-blue-500 transition-colors border-b border-white/10 pb-0.5">
+                            <Link to="/login" className="text-blue-600 hover:text-blue-700 transition-colors border-b border-zinc-200 pb-0.5">
                                 Log In
                             </Link>
                         </div>
                     </CardContent>
                 </Card>
-                <p className="mt-10 text-center text-zinc-800 text-[9px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-2">
-                    <ShieldCheck size={12} className="text-zinc-800" />
+                <p className="mt-10 text-center text-zinc-400 text-[9px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-2">
+                    <ShieldCheck size={12} className="text-zinc-400" />
                     Distributed Network Protocol Active
                 </p>
             </div>
