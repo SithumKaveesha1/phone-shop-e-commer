@@ -13,7 +13,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-[110vh] w-full bg-black overflow-hidden flex flex-col items-center justify-center pt-32 pb-20">
+    <section className="relative min-h-[110vh] w-full bg-[#f5f5f7] overflow-hidden flex flex-col items-center justify-center pt-32 pb-20">
       
       {/* FULL SCREEN CINEMATIC VIDEO BACKGROUND */}
       <div className="absolute inset-0 z-0">
@@ -30,7 +30,7 @@ const Hero = () => {
             Your browser does not support the video tag.
           </video>
           {/* Professional Overlay Gradients */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-white pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white pointer-events-none" />
           <div className="absolute inset-x-0 bottom-0 h-60 bg-gradient-to-t from-white via-white/80 to-transparent" />
       </div>
 

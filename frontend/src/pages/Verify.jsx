@@ -3,7 +3,7 @@ import { Loader2, ShieldCheck, Fingerprint } from "lucide-react";
 
 const Verify = () => {
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-black relative overflow-hidden">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-white relative overflow-hidden">
             {/* Background Glows */}
             <div className="mesh-glow bg-blue-600/10 w-[600px] h-[600px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-30 blur-[150px] animate-pulse" />
             
@@ -13,7 +13,7 @@ const Verify = () => {
                     <Fingerprint size={48} className="text-blue-500 animate-pulse" />
                 </div>
                 
-                <h1 className="text-4xl font-black text-white uppercase tracking-tighter mb-4 italic">Acquiring Identity</h1>
+                <h1 className="text-4xl font-black text-zinc-900 uppercase tracking-tighter mb-4 italic">Acquiring Identity</h1>
                 <p className="text-zinc-600 font-black uppercase tracking-[0.3em] text-[10px] mb-12 italic">Synchronizing with global secure nodes...</p>
                 
                 <div className="flex items-center gap-4 px-8 py-3 bg-white/5 rounded-full border border-white/5">
@@ -24,7 +24,7 @@ const Verify = () => {
             
             <div className="absolute bottom-12 flex items-center gap-3 opacity-30">
                 <ShieldCheck size={16} className="text-blue-600" />
-                <span className="text-[8px] font-black text-white uppercase tracking-[0.4em]">AES-256 Multi-Layer Encrypted Connection</span>
+                <span className="text-[8px] font-black text-zinc-400 uppercase tracking-[0.4em]">AES-256 Multi-Layer Encrypted Connection</span>
             </div>
         </div>
     );
