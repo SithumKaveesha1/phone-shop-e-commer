@@ -157,8 +157,8 @@ const Navbar = () => {
                             
                             <button 
                                 onClick={logoutHandler}
-                                className='p-3 text-white/10 hover:text-red-500 hover:bg-red-500/10 rounded-full transition-all duration-500 active:scale-90'
-                                title="Sync Out"
+                                className='p-3 text-red-400/70 hover:text-red-500 hover:bg-red-500/10 rounded-full transition-all duration-500 active:scale-90'
+                                title="Log Out"
                             >
                                 <LogOut size={20} strokeWidth={2.5} />
                             </button>
@@ -200,6 +200,32 @@ const Navbar = () => {
                                 </div>
                             </Link>
                         ))}
+
+                        {/* Mobile Auth Actions */}
+                        {user ? (
+                            <button 
+                                onClick={() => { setIsMenuOpen(false); logoutHandler(); }} 
+                                className="w-full text-left hover:text-red-500 text-red-500/70 group flex items-center justify-between border-b border-white/5 pb-8 transition-all animate-in fade-in slide-in-from-left-8 mt-4"
+                                style={{ animationDelay: `${categories.length * 0.1}s` }}
+                            >
+                                <li>LOG OUT</li>
+                                <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center transition-all border border-red-500/20 group-hover:bg-red-500 group-hover:border-red-500 shadow-sm">
+                                    <LogOut size={18} className="text-red-500 group-hover:text-white" />
+                                </div>
+                            </button>
+                        ) : (
+                            <Link 
+                                to="/login" 
+                                onClick={() => setIsMenuOpen(false)} 
+                                className="w-full text-left hover:text-blue-500 text-white/50 group flex items-center justify-between border-b border-white/5 pb-8 transition-all animate-in fade-in slide-in-from-left-8 mt-4"
+                                style={{ animationDelay: `${categories.length * 0.1}s` }}
+                            >
+                                <li>LOGIN (ACCESS NODE)</li>
+                                <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center transition-all border border-blue-500/20 group-hover:bg-blue-600 group-hover:border-blue-500 shadow-sm">
+                                    <User size={18} className="text-blue-500 group-hover:text-white" />
+                                </div>
+                            </Link>
+                        )}
                         <li className="mt-12 text-[10px] text-zinc-700 tracking-[0.8em] font-black text-center">SYNKED ECOSYSTEM V1.0</li>
                     </ul>
                 </div>
