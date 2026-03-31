@@ -10,7 +10,7 @@ const CheckoutStepper = ({ currentStep }) => {
     const steps = ['Shipping', 'Payment', 'Review', 'Success'];
     return (
         <div className="flex flex-col md:flex-row items-center justify-center mb-16 relative z-10 w-full max-w-4xl mx-auto gap-8 md:gap-0">
-            <div className="absolute left-0 -top-4 md:top-1/2 md:-translate-y-1/2">
+            <div className="absolute left-0 -top-8 md:top-1/2 md:-translate-y-1/2 md:-left-32">
                 <Button 
                     variant="ghost" 
                     onClick={() => navigate('/products')}
