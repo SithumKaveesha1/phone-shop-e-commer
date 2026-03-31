@@ -117,20 +117,18 @@ const ProductDetail = () => {
         ? product.colors 
         : ['#1d1d1f', '#f5f5f7', '#dcd7f2', '#637599', '#c4c9a4'];
 
-    const features = [
-        "6.3\" Super Retina XDR display",
-        "ProMotion • Always-On • Dynamic Island",
-        "Aluminum design",
-        "Action Button • Camera Control",
-        "A19 chip",
-        "5-core GPU • Ray tracing",
-        "Up to 30h video playback",
-        "12MP TrueDepth front camera",
-        "Ultra-stable video • Dual Capture",
-        "48MP Dual Fusion camera",
-        "Main + Ultra Wide • 24MP/48MP photos",
-        "Macro • Next-gen Portraits • 4K Dolby Vision"
-    ];
+    const features = product.description 
+        ? product.description.split(/\n|,/).map(f => f.trim()).filter(f => f.length > 0)
+        : [
+            "6.3\" Super Retina XDR display",
+            "ProMotion • Always-On • Dynamic Island",
+            "Aluminum design",
+            "Action Button • Camera Control",
+            "A19 chip",
+            "5-core GPU • Ray tracing",
+            "Up to 30h video playback",
+            "12MP TrueDepth front camera"
+        ];
 
     const minPrice = hasStorage ? getPriceForStorage(storageOptions[0]) : product.price;
     const maxPrice = hasStorage ? getPriceForStorage(storageOptions[storageOptions.length - 1]) : product.price;
@@ -280,7 +278,7 @@ const ProductDetail = () => {
                         <div className="pt-10 space-y-6 border-t border-zinc-200">
                             <h4 className="text-[11px] font-black text-zinc-500 uppercase tracking-[0.3em] font-bold ml-1">Technical Highlight</h4>
                             <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {features.slice(0, 8).map((stat, i) => (
+                                {features.slice(0, 16).map((stat, i) => (
                                     <li key={i} className="flex gap-4 text-xs text-zinc-500 font-bold group">
                                         <div className="w-1.5 h-1.5 rounded-full bg-zinc-300 mt-1 shadow-sm transition-all group-hover:scale-150 group-hover:bg-blue-600" />
                                         <span className="group-hover:text-zinc-900 transition-colors uppercase tracking-tight leading-tight">{stat}</span>

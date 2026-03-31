@@ -84,7 +84,25 @@ const EditProduct = () => {
         setPreviewUrls([...previewUrls, ...newPreviews]);
     };
 
-    const removeImage = () => {
+    const removeImage = (idx) => {
+        const urlToRemove = previewUrls[idx];
+        
+        // Check if this was a newly uploaded file (Blob URL)
+        if (urlToRemove.startsWith('blob:')) {
+            // Find index in imageFiles. We need to be careful as previews include existing images too.
+            // Count how many blob URLs precede this one to find its index in imageFiles.
+            const blobCount = previewUrls.slice(0, idx).filter(url => url.startsWith('blob:')).length;
+            const newImageFiles = [...imageFiles];
+            newImageFiles.splice(blobCount, 1);
+            setImageFiles(newImageFiles);
+        }
+        
+        const newPreviews = [...previewUrls];
+        newPreviews.splice(idx, 1);
+        setPreviewUrls(newPreviews);
+    };
+
+    const clearAllImages = () => {
         setImageFiles([]);
         setPreviewUrls([]);
     };
@@ -281,6 +299,15 @@ const EditProduct = () => {
                                             {idx === 0 && (
                                                 <div className="absolute top-1 left-1 bg-blue-600 text-[8px] font-bold text-white px-1.5 py-0.5 rounded shadow z-10">Main</div>
                                             )}
+                                            <button 
+                                                type="button"
+                                                onClick={() => removeImage(idx)}
+                                                className="absolute inset-0 bg-black/50 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-[2px]"
+                                            >
+                                                <div className="bg-red-500 p-1.5 rounded-full hover:bg-red-600 transition-colors">
+                                                    <Plus size={14} className="rotate-45" />
+                                                </div>
+                                            </button>
                                         </div>
                                     ))}
                                     
