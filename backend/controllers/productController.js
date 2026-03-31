@@ -50,7 +50,7 @@ export const seedProducts = async (req, res) => {
 
 export const addProduct = async (req, res) => {
   try {
-    const { name, description, price, category, brand } = req.body;
+    const { name, description, price, category, brand, storage } = req.body;
     
     if (!name || !price || !category || !brand) {
       return res.status(400).json({ success: false, message: "Name, Price, Category, and Brand are required" });
@@ -73,7 +73,8 @@ export const addProduct = async (req, res) => {
       imagePublicId: imagesArray[0].publicId,
       images: imagesArray,
       category,
-      brand
+      brand,
+      storage: storage || "none"
     });
 
     return res.status(201).json({
@@ -89,7 +90,7 @@ export const addProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, description, price, category, brand } = req.body;
+        const { name, description, price, category, brand, storage } = req.body;
 
         const product = await Product.findById(id);
         if (!product) {
@@ -101,7 +102,8 @@ export const updateProduct = async (req, res) => {
             description: description || product.description,
             price: price ? Number(price) : product.price,
             category: category || product.category,
-            brand: brand || product.brand
+            brand: brand || product.brand,
+            storage: storage !== undefined ? storage : product.storage
         };
 
         if (req.files && req.files.length > 0) {

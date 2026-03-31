@@ -15,7 +15,8 @@ const AddProduct = () => {
         description: '',
         price: '',
         category: 'iPhone',
-        brand: ''
+        brand: '',
+        storage: 'none'
     });
     const [imageFiles, setImageFiles] = useState([]);
     const [previewUrls, setPreviewUrls] = useState([]);
@@ -71,6 +72,7 @@ const AddProduct = () => {
         data.append('price', formData.price);
         data.append('category', formData.category);
         data.append('brand', formData.brand);
+        data.append('storage', formData.storage || 'none');
         
         imageFiles.forEach(file => {
             data.append('images', file);
@@ -200,6 +202,23 @@ const AddProduct = () => {
                                         className="h-12 bg-gray-50 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-gray-900 placeholder:text-gray-400"
                                         required
                                     />
+                                </div>
+                                <div className="space-y-3">
+                                    <Label htmlFor="storage" className="text-sm font-medium text-gray-500">Storage Capacity</Label>
+                                    <select 
+                                        id="storage"
+                                        value={formData.storage}
+                                        onChange={handleChange}
+                                        className="w-full h-12 px-3 bg-gray-50 border border-gray-200 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-gray-900 outline-none"
+                                    >
+                                        <option value="none">None</option>
+                                        <option value="64GB">64GB</option>
+                                        <option value="128GB">128GB</option>
+                                        <option value="256GB">256GB</option>
+                                        <option value="512GB">512GB</option>
+                                        <option value="1TB">1TB</option>
+                                        <option value="2TB">2TB</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

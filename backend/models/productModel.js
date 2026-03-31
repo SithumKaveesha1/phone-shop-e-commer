@@ -24,6 +24,10 @@ const productSchema = new mongoose.Schema(
       required: true,
       enum: ["iPhone", "Mac", "iPad", "Watch", "AirPods", "Accessories", "Mobile", "Headphone", "Laptop", "TV"],
     },
+    storage: {
+      type: String,
+      default: "none",
+    },
     brand: {
       type: String,
       required: true,

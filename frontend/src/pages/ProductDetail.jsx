@@ -72,16 +72,31 @@ const ProductDetail = () => {
 
     const isMobile = ["iPhone", "iPad"].includes(product.category);
     const isMac = product.category === "Mac";
-    const hasStorage = true; // Always show the section for consistent UI
+    
+    let storageOptions = [];
+    let customStorage = false;
+    
+    if (product.storage && product.storage.toLowerCase() !== 'none') {
+        storageOptions = product.storage.split(',').map(s => s.trim());
+        customStorage = true;
+    } else if (!product.storage || product.storage.toLowerCase() !== 'none') {
+        // Fallback for older seeded products that lack the storage field
+        storageOptions = isMobile 
+            ? ["128GB", "256GB", "512GB", "1TB"] 
+            : isMac 
+                ? ["256GB", "512GB", "1TB", "2TB"] 
+                : ["Standard"];
+    }
 
-    const storageOptions = isMobile 
-        ? ["128GB", "256GB", "512GB", "1TB"] 
-        : isMac 
-            ? ["256GB", "512GB", "1TB", "2TB"] 
-            : ["Standard"];
+    const hasStorage = storageOptions.length > 0;
 
     const getPriceForStorage = (storage) => {
         let price = product.price;
+        if (customStorage) {
+            // For custom storage string, price stays base price unless customized
+            return price;
+        }
+        // Fallback dynamic pricing for seeded variants
         if (isMobile) {
             if (storage === "256GB") price += 35000;
             if (storage === "512GB") price += 75000;
@@ -117,8 +132,8 @@ const ProductDetail = () => {
         "Macro • Next-gen Portraits • 4K Dolby Vision"
     ];
 
-    const minPrice = getPriceForStorage(storageOptions[0]);
-    const maxPrice = getPriceForStorage(storageOptions[storageOptions.length - 1]);
+    const minPrice = hasStorage ? getPriceForStorage(storageOptions[0]) : product.price;
+    const maxPrice = hasStorage ? getPriceForStorage(storageOptions[storageOptions.length - 1]) : product.price;
     const currentPrice = selectedStorage ? getPriceForStorage(selectedStorage) : minPrice;
 
     return (
@@ -193,26 +208,28 @@ const ProductDetail = () => {
                         </div>
 
                         {/* Storage Selection */}
-                        <div className="space-y-6">
-                            <h4 className="text-[11px] font-black text-zinc-900 uppercase tracking-[0.3em] font-bold ml-1">
-                                {isMobile || isMac ? "System Storage" : "Configuration"}
-                            </h4>
-                            <div className="flex flex-wrap gap-4">
-                                {storageOptions.map(size => (
-                                    <button
-                                        key={size}
-                                        onClick={() => setSelectedStorage(size)}
-                                        className={`px-8 py-4 rounded-[20px] border-2 text-xs font-black uppercase tracking-widest transition-all ${
-                                            selectedStorage === size 
-                                            ? 'bg-blue-600 border-blue-600 text-white shadow-[0_10px_30px_rgba(37,99,235,0.2)] scale-[1.02]' 
-                                            : 'bg-white border-zinc-200 text-zinc-500 hover:text-zinc-900 hover:border-zinc-400'
-                                        }`}
-                                    >
-                                        {size}
-                                    </button>
-                                ))}
+                        {hasStorage && (
+                            <div className="space-y-6">
+                                <h4 className="text-[11px] font-black text-zinc-900 uppercase tracking-[0.3em] font-bold ml-1">
+                                    {isMobile || isMac ? "System Storage" : "Configuration"}
+                                </h4>
+                                <div className="flex flex-wrap gap-4">
+                                    {storageOptions.map(size => (
+                                        <button
+                                            key={size}
+                                            onClick={() => setSelectedStorage(size)}
+                                            className={`px-8 py-4 rounded-[20px] border-2 text-xs font-black uppercase tracking-widest transition-all ${
+                                                selectedStorage === size 
+                                                ? 'bg-blue-600 border-blue-600 text-white shadow-[0_10px_30px_rgba(37,99,235,0.2)] scale-[1.02]' 
+                                                : 'bg-white border-zinc-200 text-zinc-500 hover:text-zinc-900 hover:border-zinc-400'
+                                            }`}
+                                        >
+                                            {size}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         {/* Color Selection */}
                         <div className="space-y-6">
