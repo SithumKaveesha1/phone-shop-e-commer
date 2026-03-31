@@ -46,16 +46,16 @@ const ProfileForm = ({ user, onSubmit, isLoading }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className='space-y-10 glass-card p-10 md:p-14 rounded-[40px] border border-white/5 w-full shadow-2xl relative overflow-hidden group'>
+        <form onSubmit={handleSubmit} className='space-y-10 bg-white p-10 md:p-14 rounded-[40px] border border-zinc-200 w-full shadow-sm relative overflow-hidden group'>
             <div className="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
             
             <div className="flex items-center gap-5 mb-4 relative z-10">
-                <div className="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-500 border border-blue-500/10 group-hover:bg-blue-500/20 transition-colors">
+                <div className="w-14 h-14 bg-blue-50/50 rounded-2xl flex items-center justify-center text-blue-500 border border-blue-100 group-hover:bg-blue-50/80 transition-colors">
                     <User size={24} />
                 </div>
                 <div>
-                    <h2 className="text-3xl font-black text-white uppercase tracking-tighter">Profile Configuration</h2>
-                    <p className="text-zinc-600 text-[10px] font-black uppercase tracking-[0.2em] mt-1 italic">Update your operational nodes</p>
+                    <h2 className="text-3xl font-black text-zinc-900 uppercase tracking-tighter">Profile Configuration</h2>
+                    <p className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mt-1 italic">Update your operational nodes</p>
                 </div>
             </div>
             
@@ -68,7 +68,7 @@ const ProfileForm = ({ user, onSubmit, isLoading }) => {
                         name="firstname" 
                         value={formData.firstname}
                         onChange={handleChange}
-                        className='h-16 rounded-2xl bg-white/5 border-white/5 focus:border-blue-500/50 transition-all font-black text-white' 
+                        className='h-16 rounded-2xl bg-zinc-50 border-zinc-200 focus:border-blue-500/50 transition-all font-black text-zinc-900' 
                     />
                 </div>
                 <div className="space-y-3">
@@ -79,7 +79,7 @@ const ProfileForm = ({ user, onSubmit, isLoading }) => {
                         name="lastname" 
                         value={formData.lastname}
                         onChange={handleChange}
-                        className='h-16 rounded-2xl bg-white/5 border-white/5 focus:border-blue-500/50 transition-all font-black text-white' 
+                        className='h-16 rounded-2xl bg-zinc-50 border-zinc-200 focus:border-blue-500/50 transition-all font-black text-zinc-900' 
                     />
                 </div>
             </div>
@@ -87,17 +87,17 @@ const ProfileForm = ({ user, onSubmit, isLoading }) => {
             <div className="space-y-3 relative z-10">
                 <Label htmlFor="email" className='text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-2'>Grid Primary Link (Email)</Label>
                 <div className="relative">
-                    <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-zinc-700" size={18} />
+                    <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
                     <Input 
                         id="email"
                         type='email' 
                         name="email" 
                         value={formData.email}
                         disabled 
-                        className='h-16 pl-14 rounded-2xl border-white/5 bg-zinc-900/50 text-zinc-600 cursor-not-allowed font-black opacity-50 transition-all' 
+                        className='h-16 pl-14 rounded-2xl border-zinc-200 bg-zinc-100/50 text-zinc-500 cursor-not-allowed font-black transition-all' 
                     />
                     <div className="absolute right-5 top-1/2 -translate-y-1/2">
-                        <span className="text-[8px] font-black uppercase tracking-widest text-zinc-700">LOCKED</span>
+                        <span className="text-[8px] font-black uppercase tracking-widest text-zinc-400">LOCKED</span>
                     </div>
                 </div>
             </div>
@@ -105,14 +105,14 @@ const ProfileForm = ({ user, onSubmit, isLoading }) => {
             <div className="space-y-3 relative z-10">
                 <Label htmlFor="phoneNo" className='text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-2'>Comm Frequency (Phone)</Label>
                 <div className="relative">
-                    <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-zinc-700" size={18} />
+                    <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
                     <Input 
                         id="phoneNo"
                         type='text' 
                         name="phoneNo" 
                         value={formData.phoneNo}
                         onChange={handleChange}
-                        className='h-16 pl-14 rounded-2xl bg-white/5 border-white/5 focus:border-blue-500/50 transition-all font-black text-white' 
+                        className='h-16 pl-14 rounded-2xl bg-zinc-50 border-zinc-200 focus:border-blue-500/50 transition-all font-black text-zinc-900' 
                     />
                 </div>
             </div>
@@ -120,14 +120,14 @@ const ProfileForm = ({ user, onSubmit, isLoading }) => {
             <div className="space-y-3 relative z-10">
                 <Label htmlFor="address" className='text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-2'>Physical Deployment Address</Label>
                 <div className="relative">
-                    <MapPin className="absolute left-5 top-1/2 -translate-y-1/2 text-zinc-700" size={18} />
+                    <MapPin className="absolute left-5 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
                     <Input 
                         id="address"
                         type='text' 
                         name="address" 
                         value={formData.address}
                         onChange={handleChange}
-                        className='h-16 pl-14 rounded-2xl bg-white/5 border-white/5 focus:border-blue-500/50 transition-all font-black text-white' 
+                        className='h-16 pl-14 rounded-2xl bg-zinc-50 border-zinc-200 focus:border-blue-500/50 transition-all font-black text-zinc-900' 
                     />
                 </div>
             </div>
@@ -141,7 +141,7 @@ const ProfileForm = ({ user, onSubmit, isLoading }) => {
                         name="city" 
                         value={formData.city}
                         onChange={handleChange}
-                        className='h-16 rounded-2xl bg-white/5 border-white/5 focus:border-blue-500/50 transition-all font-black text-white' 
+                        className='h-16 rounded-2xl bg-zinc-50 border-zinc-200 focus:border-blue-500/50 transition-all font-black text-zinc-900' 
                     />
                 </div>
                 <div className="space-y-3">
@@ -152,7 +152,7 @@ const ProfileForm = ({ user, onSubmit, isLoading }) => {
                         name="zipCode" 
                         value={formData.zipCode}
                         onChange={handleChange}
-                        className='h-16 rounded-2xl bg-white/5 border-white/5 focus:border-blue-500/50 transition-all font-black text-white' 
+                        className='h-16 rounded-2xl bg-zinc-50 border-zinc-200 focus:border-blue-500/50 transition-all font-black text-zinc-900' 
                     />
                 </div>
             </div>

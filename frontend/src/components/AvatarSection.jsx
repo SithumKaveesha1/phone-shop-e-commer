@@ -23,7 +23,7 @@ const AvatarSection = ({ user, onImageChange }) => {
                 {/* Glow Ring */}
                 <div className="absolute -inset-4 bg-gradient-to-tr from-blue-600/20 to-purple-600/20 rounded-full blur-2xl group-hover:opacity-100 opacity-0 transition-opacity duration-700" />
                 
-                <div className="relative w-40 h-40 md:w-52 md:h-52 rounded-[60px] overflow-hidden border-2 border-white/5 shadow-2xl transition-transform duration-700 group-hover:scale-105">
+                <div className="relative w-40 h-40 md:w-52 md:h-52 rounded-[60px] overflow-hidden border-2 border-zinc-200 shadow-sm transition-transform duration-700 group-hover:scale-105">
                     <img 
                         src={preview} 
                         alt="profile" 
@@ -45,11 +45,11 @@ const AvatarSection = ({ user, onImageChange }) => {
             </div>
 
             <div className="mt-8 text-center">
-                <h3 className="text-2xl font-black text-white tracking-tighter uppercase">{user?.firstname} {user?.lastname}</h3>
+                <h3 className="text-2xl font-black text-zinc-900 tracking-tighter uppercase">{user?.firstname} {user?.lastname}</h3>
                 <p className="text-blue-500 text-[10px] font-black uppercase tracking-[0.3em] mt-1 italic">Active Operator</p>
             </div>
             
-            <Label className='mt-8 cursor-pointer glass-card border border-white/5 text-zinc-400 px-8 py-3 rounded-2xl hover:bg-white/10 hover:text-white transition-all shadow-xl font-black uppercase tracking-widest text-[11px]'>
+            <Label className='mt-8 cursor-pointer bg-white border border-zinc-200 text-zinc-500 px-8 py-3 rounded-2xl hover:bg-zinc-50 hover:text-zinc-900 transition-all shadow-sm font-black uppercase tracking-widest text-[11px]'>
                 Change Interface
                 <input 
                     type="file" 
