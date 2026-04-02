@@ -61,7 +61,7 @@ const TheLatest = () => {
                 </div>
 
                 {/* Product Info */}
-                <div className="text-center relative z-10">
+                <div className="text-center relative z-10 transition-all duration-500 group-hover:opacity-0 group-hover:-translate-y-10">
                     <h3 className="font-black text-zinc-900 text-xl mb-3 tracking-tight">{p.name}</h3>
                     <p className="text-blue-600 font-black text-base mb-2 tracking-tight">{p.price}</p>
                     <div className="flex items-center justify-center gap-2 bg-zinc-200/50 px-4 py-1.5 rounded-full">
@@ -70,10 +70,10 @@ const TheLatest = () => {
                     </div>
                 </div>
 
-                {/* Hover Action */}
-                <div className="absolute inset-x-0 bottom-0 p-8 translate-y-full group-hover:translate-y-0 transition-all duration-500 ease-out">
-                    <Link to={`/products`} className="w-full bg-zinc-900 hover:bg-black text-white py-5 rounded-3xl font-black text-[10px] uppercase tracking-[0.3em] flex items-center justify-center gap-3 shadow-2xl transition-all active:scale-95">
-                        View Details <ChevronRight size={16} strokeWidth={3} />
+                {/* Hover Action - Re-engineered for "Beautiful Pop-up" */}
+                <div className="absolute inset-x-0 bottom-0 p-8 opacity-0 group-hover:opacity-100 translate-y-8 group-hover:translate-y-[-40px] transition-all duration-500 ease-out z-20">
+                    <Link to={`/products`} className="w-full bg-black/95 backdrop-blur-xl text-white py-6 rounded-3xl font-black text-[10px] uppercase tracking-[0.4em] flex items-center justify-center gap-4 shadow-[0_20px_50px_rgba(0,0,0,0.3)] transition-all active:scale-95 hover:scale-[1.02] border border-white/10">
+                        View Details <ChevronRight size={18} strokeWidth={3} className="text-blue-400" />
                     </Link>
                 </div>
               </div>
