@@ -44,6 +44,7 @@ const Hero = () => {
                     src={logo} 
                     alt="INBOX APPLE STORE" 
                     className="h-32 w-32 object-contain rounded-full border-[8px] border-blue-600 p-1.5 bg-white shadow-[0_20px_60px_rgba(0,0,100,0.4)]"
+                    onError={(e) => { e.target.src = 'https://placehold.co/200x200?text=INBOX.LK'; }}
                 />
             </div>
         </div>

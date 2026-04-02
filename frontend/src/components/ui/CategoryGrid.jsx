@@ -72,6 +72,18 @@ const CategoryGrid = () => {
                       src={cat.image} 
                       alt={cat.name} 
                       className="max-h-full max-w-full object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.08)] group-hover:drop-shadow-[0_40px_60px_rgba(0,0,0,0.15)] transition-all duration-1000 group-hover:-translate-y-4 group-hover:rotate-6" 
+                      onError={(e) => { 
+                        const name = cat.name.toLowerCase();
+                        const fallbacks = {
+                          iphone: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=400&q=80',
+                          airpods: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80',
+                          ipad: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400&q=80',
+                          watch: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400&q=80',
+                          mac: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&q=80',
+                          accessories: 'https://images.unsplash.com/photo-1491933382434-500287f9b54b?w=400&q=80'
+                        };
+                        e.target.src = fallbacks[name] || 'https://images.unsplash.com/photo-1491933382434-500287f9b54b?w=400&q=80';
+                      }}
                     />
                 </div>
               </div>

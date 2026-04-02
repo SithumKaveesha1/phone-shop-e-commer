@@ -72,6 +72,7 @@ const Navbar = () => {
                             src={logo} 
                             alt="INBOX" 
                             className="h-14 w-14 object-contain rounded-full border-[3px] border-blue-600 p-0.5 bg-black shadow-[0_10px_30px_rgba(0,0,100,0.5)] group-hover:rotate-12 transition-transform duration-700 relative z-10"
+                            onError={(e) => { e.target.src = 'https://placehold.co/100x100?text=INBOX'; }}
                         />
                         <div className="ml-4 flex flex-col items-start relative z-10">
                             <span className="text-[12px] font-black text-white uppercase tracking-[0.5em] leading-none mb-1 group-hover:text-blue-500 transition-colors">INBOX.LK</span>

@@ -29,6 +29,7 @@ const DeviceShowcase = ({ title, subtitle, desc, image, features, reverse, categ
               src={image} 
               alt={title} 
               className="w-full max-w-2xl h-auto object-contain relative z-10 drop-shadow-[0_40px_80px_rgba(0,0,0,0.1)]" 
+              onError={(e) => { e.target.src = `https://placehold.co/800x600?text=${encodeURIComponent(title)}`; }}
             />
           </div>
 

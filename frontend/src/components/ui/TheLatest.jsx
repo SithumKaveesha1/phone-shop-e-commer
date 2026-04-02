@@ -50,7 +50,18 @@ const TheLatest = () => {
 
                 {/* Main Product Image */}
                 <div className="relative z-10 w-full h-72 flex items-center justify-center mb-10 transition-transform duration-700 group-hover:scale-110">
-                    <img src={p.image} alt={p.name} className="max-h-full object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.08)]" />
+                    <img 
+                        src={p.image} 
+                        alt={p.name} 
+                        className="max-h-full object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.08)]" 
+                        onError={(e) => { 
+                            const name = p.name.toLowerCase();
+                            if (name.includes('iphone')) e.target.src = 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=600&q=80';
+                            else if (name.includes('mac')) e.target.src = 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&q=80';
+                            else if (name.includes('watch')) e.target.src = 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=600&q=80';
+                            else e.target.src = 'https://images.unsplash.com/photo-1491933382434-500287f9b54b?w=600&q=80';
+                        }}
+                    />
                 </div>
 
                 {/* Color Dots */}

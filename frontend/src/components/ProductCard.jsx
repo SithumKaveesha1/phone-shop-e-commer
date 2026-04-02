@@ -87,6 +87,17 @@ const ProductCard = ({ product, onDelete, viewMode = 'grid' }) => {
           src={currentImage || "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80"}
           alt={product.name}
           className={`w-full h-full object-contain p-10 relative z-10 transition-all duration-1000 group-hover:scale-105 drop-shadow-[0_10px_20px_rgba(0,0,0,0.05)] ${isSoldOut ? 'opacity-40 grayscale' : ''}`}
+          onError={(e) => { 
+            const category = product.category?.toLowerCase() || '';
+            const fallbacks = {
+              iphone: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=600&q=80',
+              mac: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&q=80',
+              ipad: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&q=80',
+              watch: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=600&q=80',
+              airpods: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80'
+            };
+            e.target.src = fallbacks[category] || 'https://images.unsplash.com/photo-1491933382434-500287f9b54b?w=600&q=80';
+          }}
         />
         
         {/* Color variants switcher positioned on the right like in screenshot */}

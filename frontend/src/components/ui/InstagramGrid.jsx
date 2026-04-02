@@ -19,6 +19,7 @@ const InstagramGrid = () => {
                         src={img} 
                         alt="Visual Hub Node" 
                         className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-115" 
+                        onError={(e) => { e.target.src = 'https://placehold.co/500x500?text=Instagram+Post'; }}
                     />
                     
                     {/* Interactive Glassmorphic Follow Overlay */}
